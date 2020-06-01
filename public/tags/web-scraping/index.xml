@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Web Scraping - Tag - Peter Belai - R and data blog</title>
+        <link>/tags/web-scraping/</link>
+        <description>Web Scraping - Tag - Peter Belai - R and data blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>peter.belai@gmail.com (Peter Belai)</managingEditor>
+            <webMaster>peter.belai@gmail.com (Peter Belai)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 01 Jun 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="/tags/web-scraping/" rel="self" type="application/rss+xml" /><item>
+    <title>Scraping financial statements of Slovak financial entities</title>
+    <link>/post/scraping-financial-statements-of-slovak-financial-entities/</link>
+    <pubDate>Mon, 01 Jun 2020 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>/post/scraping-financial-statements-of-slovak-financial-entities/</guid>
+    <description><![CDATA[It is always interesting to go back to your older projects. You can spot, how is your coding style evolving, and how you, as a programmer, are improving. Recently, I had to go through the code of one of my first projects in R and boy, was it a mess. It was supposed to download Financial Statements of all the businesses in Slovakia for a certain year. It worked, barely.]]></description>
+</item></channel>
+</rss>

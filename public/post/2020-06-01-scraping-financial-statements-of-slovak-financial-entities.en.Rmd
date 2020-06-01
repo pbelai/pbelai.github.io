@@ -1,0 +1,57 @@
+---
+title: Scraping financial statements of Slovak financial entities
+author: Peter Belai
+date: '2020-06-01'
+slug: scraping-financial-statements-of-slovak-financial-entities
+categories:
+  - R
+tags:
+  - R
+  - Web Scraping
+lastmod: '2020-06-01T21:01:03+02:00'
+authorLink: ''
+hiddenFromHomePage: no
+hiddenFromSearch: no
+featuredImage: ''
+featuredImagePreview: ''
+math:
+  enable: no
+lightgallery: no
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+It is always interesting to go back to your older projects. You can spot, how is your coding style evolving, and how you, as a programmer, are improving. Recently, I had to go through the code of one of my first projects in R and boy, was it a mess. It was supposed to download  Financial Statements of all the businesses in Slovakia for a certain year. It worked, barely. But trying to understand the code was a pain. No functions, 
+random variable names, no documentation... There was even a public API, but for some reason (and I am sure, that at a time It was a "great" one), I have decided not to use it but to scrape web pages directly.
+
+So I have decided this is a great opportunity to see, how would I do things now, and finally do this code some justice and banish this abomination that I have once called code.
+
+### Public API
+
+First of all, we have to take a look on a public API endpoints and data model. Its full documentation is here (http://www.registeruz.sk/cruz-public/home/api). From the data model, we are interested in accounting entities and financial statements.
+As you can see from the 
+
+### Code structure
+
+This time, things should be done right, that's why I have decided to create R package. This is a first step, that will give this project initial structure. This also gives developer bigger control over which packages are used, which functions we want to export and lot more. All these great features come at almost no cost, so there is no reason not to create R package. If you haven't created R package before, Hadley has a great tutorial (http://r-pkgs.had.co.nz/) how to do things right.
+
+
+
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
