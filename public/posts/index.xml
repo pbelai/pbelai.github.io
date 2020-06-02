@@ -1,10 +1,10 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>R - Category - Peter Belai - R and data blog</title>
-        <link>/categories/r/</link>
-        <description>R - Category - Peter Belai - R and data blog</description>
+        <title>All Posts - Peter Belai - R and data blog</title>
+        <link>/posts/</link>
+        <description>All Posts | Peter Belai - R and data blog</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>peter.belai@gmail.com (Peter Belai)</managingEditor>
-            <webMaster>peter.belai@gmail.com (Peter Belai)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 01 Jun 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="/categories/r/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>peter.belai@gmail.com (Peter Belai)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 01 Jun 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="/posts/" rel="self" type="application/rss+xml" /><item>
     <title>Scraping financial statements of Slovak financial entities</title>
     <link>/2020-06-01-scraping-financial-statements-of-slovak-financial-entities/</link>
     <pubDate>Mon, 01 Jun 2020 00:00:00 &#43;0000</pubDate>

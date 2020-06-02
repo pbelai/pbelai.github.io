@@ -30,7 +30,7 @@ enableEmoji = true
         # you can add extra information after the name (HTML format is supported), such as icons
         post = ""
         name = "Posts"
-        url = "/post/"
+        url = "/posts/"
         # title will be shown when you hover on this menu link.
         title = ""
         weight = 1
@@ -120,7 +120,7 @@ enableEmoji = true
           # disclaimer (HTML format is supported)
           disclaimer = ""
         # Home page posts
-        [languages.en.params.home.posts]
+        [languages.en.params.home.post]
           enable = true
           # special amount of posts in each home posts page
           paginate = 6
@@ -223,7 +223,7 @@ enableEmoji = true
     # Table of the contents config
     [params.page.toc]
       # whether to enable the table of the contents
-      enable = true
+      enable = false
       # whether to keep the static table of the contents in front of the post
       keepStatic = false
       # whether to make the table of the contents in the sidebar automatically collapsed

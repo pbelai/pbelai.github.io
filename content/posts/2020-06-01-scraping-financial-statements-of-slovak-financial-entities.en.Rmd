@@ -1,0 +1,129 @@
+---
+title: Scraping financial statements of Slovak financial entities
+author: Peter Belai
+date: '2020-06-01'
+slug: scraping-financial-statements-of-slovak-financial-entities
+categories:
+  - R
+tags:
+  - R
+  - Web Scraping
+lastmod: '2020-06-01T21:01:03+02:00'
+authorLink: ''
+hiddenFromHomePage: no
+hiddenFromSearch: no
+featuredImage: ''
+featuredImagePreview: ''
+math:
+  enable: no
+lightgallery: no
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+```
+It is always interesting to go back to your older projects. You can spot, how is your coding style evolving, and how you, as a programmer, are improving. Recently, I had to go through the code of one of my first projects in R and boy, was it a mess. It was supposed to download  Financial Statements of all the businesses in Slovakia for a certain year. It worked, barely. But trying to understand the code was a pain. No functions, 
+random variable names, no documentation... There was even a public API, but for some reason (and I am sure, that at a time It was a "great" one), I have decided not to use it but to scrape web pages directly.
+
+So I have decided this is a great opportunity to see, how would I do things now, and finally do this code some justice and banish this abomination that I have once called code.
+
+### Public API
+
+First of all, we have to take a look on a public API endpoints and data model. Its full documentation is here (http://www.registeruz.sk/cruz-public/home/api). From the data model, we are interested in accounting entities and financial statements.
+It is also possible to see expected output from the endpoints, which we will use for preparing our database tables. 
+
+### Project structure
+
+This time, things should be done right, that's why I have decided to create R package. This is a first step, that will give this project initial structure. This also gives developer bigger control over which packages are used, which functions we want to export and a lot more. All these great features come at almost no cost, so there is no reason not to create R package. If you haven't created R package before, Hadley has a great tutorial (http://r-pkgs.had.co.nz/) how to do things right.
+
+In the previous project, data were saved as .csv files which were the manually concated. Now we want to have downloaded data stored in a reasonable way. Because of the relational nature of the data, we will use PostgreSQL database. (https://www.enterprisedb.com/) For connecting to the database we will use THIS package.
+
+It is possible to see that we will have to separate this will have to address two separate concerns:
+
+* Communication with API
+* Database communication
+* Scraping the data
+
+After you have created new R package and have installed PostgreSQL, we can finally start scraping the data. 
+
+### Preparing database
+
+```{sql eval=FALSE}
+CREATE TABLE accounting_entity (
+	id VARCHAR (10) PRIMARY KEY,  --! EJ
+	obdobieOd DATE,
+	obdobieDo DATE,
+	datumPodania DATE,
+	datumZostavenia DATE,
+	datumSchvalenia DATE,
+	datumZostaveniaK DATE,
+	datumPrilozeniaSpravyAuditora DATE,
+	nazovUJ VARCHAR (500),
+	ico CHAR (8),
+	dic CHAR (10),
+	nazovFondu VARCHAR (500),
+	leiKod VARCHAR (20),
+	idUJ VARCHAR (10),
+	konsolidovana BOOLEAN,
+	konsolidovanaZavierkaUstrednejStatnejSpravy BOOLEAN,
+	suhrnnaUctovnaZavierkaVerejnejSpravy BOOLEAN,
+	typ VARCHAR (15),
+	idUctovnychVykazov VARCHAR (10),
+	zdrojDat VARCHAR (30),
+	datumPoslednejUpravy DATE 
+);
+
+
+CREATE TABLE accounting_entity (
+	id VARCHAR (10) PRIMARY KEY,  --! EJ
+	ico CHAR (8),
+	dic CHAR (10),
+	sid VARCHAR (5),
+	nazovUJ VARCHAR (500),
+	mesto VARCHAR (200),
+	ulica VARCHAR (200),
+	psc VARCHAR (10),
+	datumZalozenia DATE,
+	datumZrusenia DATE,
+	pravnaForma VARCHAR (100),
+	skNace VARCHAR (100),
+	velkostOrganizacie VARCHAR (100),
+	druhVlastnictva VARCHAR (100),
+	kraj VARCHAR (100),
+	okres VARCHAR (100),
+	sidlo VARCHAR (100),
+	konsolidovana bool,
+	idUctovnychZavierok VARCHAR (10),
+	idVyrocnychSprav VARCHAR (10),
+	zdrojDat VARCHAR (30),
+	datumPoslednejUpravy DATE 
+);
+```
+
+### Communication with API
+
+
+### Database communication
+
+
+### Putting it all together
+
+
+
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
