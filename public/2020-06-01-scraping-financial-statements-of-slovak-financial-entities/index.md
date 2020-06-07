@@ -8,13 +8,11 @@ random variable names, no documentation… There was even a public API, but for 
 <p>So I have decided this is a great opportunity to see, how would I do things now, and finally do this code some justice and banish this abomination that I have once called code.</p>
 <div id="public-api" class="section level1">
 <h1>Public API</h1>
-<p>First of all, we have to take a look on a public API endpoints and data model. Its full documentation is here (<a href="http://www.registeruz.sk/cruz-public/home/api" class="uri">http://www.registeruz.sk/cruz-public/home/api</a>). From the data model, we are interested in accounting entities and financial statements.
-It is also possible to see expected output from the endpoints, which we will use for preparing our database tables.</p>
-</div>
-<div id="project-structure" class="section level1">
-<h1>Project structure</h1>
-<p>This time, things should be done right, that’s why I have decided to create R package. This is a first step, that will give this project initial structure. This also gives developer bigger control over which packages are used, which functions we want to export and a lot more. All these great features come at almost no cost, so there is no reason not to create R package. If you haven’t created R package before, Hadley has a great tutorial (<a href="http://r-pkgs.had.co.nz/" class="uri">http://r-pkgs.had.co.nz/</a>) how to do things right.</p>
-<p>In the previous project, data were saved as .csv files which were the manually concated. Now we want to have downloaded data stored in a reasonable way. Because of the relational nature of the data, we will use PostgreSQL database. (<a href="https://www.enterprisedb.com/" class="uri">https://www.enterprisedb.com/</a>)</p>
+<p>First of all, we have to take a look at a public API endpoints and data model. Its full documentation can be found <a href="http://www.registeruz.sk/cruz-public/home/api">here</a>. From the data model, we are interested in accounting entities and financial statements.
+It is also possible to see an expected output from the endpoints, which we will use for preparing our database tables.
+# Project structure</p>
+<p>This time, things should be done right, that’s why I have decided to create an R package. This is a first step, that will give this project an initial structure. This also gives developer bigger control over which packages are used, which functions we want to export, and a lot more. All these great features come at almost no cost, so there is no reason not to create an R package. If you haven’t created an R package before, Hadley has a great <a href="http://r-pkgs.had.co.nz/">tutorial</a> on how to do things right.</p>
+<p>In the previous project, data were saved as .csv files which were the manually concated. Now we want to have downloaded data stored reasonably. Because of the relational nature of the data, we will use the <a href="https://www.enterprisedb.com/">PostgreSQL database</a>.</p>
 </div>
 <div id="preparing-database" class="section level1">
 <h1>Preparing database</h1>
@@ -87,17 +85,17 @@ BEGIN
     EXECUTE podZS;
 END;
 $$ ;</code></pre>
-<p>The script will create all the tables that we will need for the downloaded data. Now, it’s time to prepare code that will fill the tables with data.</p>
+<p>After running the script, it’s time to prepare code that will fill the tables with data.</p>
 </div>
 <div id="communication-with-api" class="section level1">
 <h1>Communication with API</h1>
-<p>Now it is time to prepare funtions, which will communicate with the API. Natural way to communicate with API would be to use different type of HTTP request methods. However this is not the case. If you try <code>httr::GET</code> it will fail, however we can use function <code>readLines</code> from base package. This will return the content of the website which we can then transform into nice object using <code>rjson::fromJSON</code>.</p>
+<p>First we create functions, which will communicate with the API. A natural way to communicate with API would be to use a different types of HTTP request methods. However, this is not the case. If you try <code>httr::GET</code> it will fail. However, we can use function <code>readLines</code> from the base package. This will return the content of the website which we can then transform into a nice object using <code>rjson::fromJSON</code>.</p>
 <p>We can create a nice little function for this, as we will use this a lot.</p>
 <pre class="r"><code>getObjectFromURL &lt;- function(url) {
   readLines(url, warn = FALSE, encoding = &quot;UTF-8&quot;) %&gt;% 
     rjson::fromJSON()
 }</code></pre>
-<p>For creating URLs with queries, We could use <code>paste</code> for each each endpoint with all the parameters, however, this solution would be really error prone and could get messy soon. For this we can also use small utility function, which will prepare the URL.</p>
+<p>For creating URLs with queries, We could use <code>paste</code> for each endpoint with all the parameters, however, this solution would be error-prone and could get messy soon. For this, we can also use a small utility function, which will prepare the URL.</p>
 <pre class="r"><code>createUrl &lt;- function(endpoint, ..., baseUrl = &quot;http://www.registeruz.sk/cruz-public/api&quot;) {
   params &lt;- list(...)
   params &lt;- paste(names(params), params, sep = &quot;=&quot;)
@@ -107,7 +105,7 @@ $$ ;</code></pre>
     paste0(baseUrl, endpoint, &quot;?&quot;, paste0(unlist(params), collapse = &quot;&amp;&quot;))
   }
 }</code></pre>
-<p>And this last function, which we will use for downloading data is a little bit hacky. While batch downloading, I have noticed, that querying some URLs will throw error, but if we query the same URL next time, it will return the data. So this functions will try to query URL a few times and it will return <code>NULL</code> only if it fails each time.</p>
+<p>And this last function, which we will use for downloading data is a little bit hacky. While batch downloading, I have noticed, that querying some URLs will throw an error, but if we query the same URL next time, it will return the data. So this function will try to query URL a few times and it will return <code>NULL</code> only if it fails each time.</p>
 <pre class="r"><code>tryUntilSuccess &lt;- function(url, numberOfTries = 20, fun = getObjectFromURL) {
   if (numberOfTries == 0) {
     warning(&quot;Unable to read from: &quot;, url)
@@ -135,7 +133,7 @@ getFinancialReportDetails &lt;- function(id) {
 </div>
 <div id="database-communication" class="section level1">
 <h1>Database communication</h1>
-<p>Next we need to prepare functions, which will save downloaded data to the database. We pretty much only need database connection function, which will be apending data into the database. Database connection is defined as global variable here as I have wanted to create something similar to singleton. I am not fully satisfied with this solution, as it misses encapsulation, so I will probably look how to approach this stuff in the future.</p>
+<p>Next, we need to prepare functions, which will save downloaded data to the database. We pretty much only need a database connection function, which will be appending data into the database. The database connection is defined as a global variable here as I have wanted to create something similar to a singleton pattern. I am not fully satisfied with this solution, as it misses encapsulation, so I will probably look at how to approach this stuff in the future.</p>
 <pre class="r"><code>DB_CONNECTION &lt;- NULL
 
 
@@ -177,8 +175,8 @@ appendIfMissing &lt;- function(x, tableName, con) {
     usethis::ui_info(paste(&quot;Appended missing values to table:&quot;, nrOfAppendedRows))
   }
 }</code></pre>
-<p>Except of these functions, that will make our communication with DB easier, we will also need to prepare data to be appended into the database. We are going to split each financial report into multiple different parts. Base part of the financial report, which specifies where the data comes from and which template was used. Then we have title page of the report, which contains informations about financial unit. Final parts that we will extract are assets, liabilities and equity, and income statement of the financial entity.</p>
-<p>For these things, we will use following functions:</p>
+<p>Except for these functions, that will make our communication with DB easier, we will also need to prepare data to be appended into the database. We are going to split each financial report into multiple different parts. The base part of the financial report, which specifies where the data comes from and which template was used. Then we have the title page of the report, which contains information about the financial unit. The final parts that we will extract are assets, liabilities and equity, and income statement, of the financial entity.</p>
+<p>For these things, we will use the following functions:</p>
 <pre class="r"><code>getBaseFinReport &lt;- function(finReport) {
   finReport[!names(finReport) %in% c(&quot;prilohy&quot;, &quot;obsah&quot;, &quot;idUctovnejZavierky&quot;, &quot;id&quot;)] %&gt;%
     as.data.frame(stringsAsFactors = FALSE) %&gt;%
@@ -217,15 +215,15 @@ getNumericReportData &lt;- function(finReport, position) {
     cbind(id_financial_report = finReport$id)
 }
 
-getAktivaFinReport &lt;- function(finReport) {
+getAssetsFinReport &lt;- function(finReport) {
   getNumericReportData(finReport, 1)
 }
 
-getPasivaFinReport &lt;- function(finReport) {
+getLAEFinReport &lt;- function(finReport) {
   getNumericReportData(finReport, 2)
 }
 
-getZSFinReport &lt;- function(finReport) {
+getISFinReport &lt;- function(finReport) {
   getNumericReportData(finReport, 3)
 }
 
@@ -238,7 +236,8 @@ toCharDF &lt;- function(x) {
   x
 }
 </code></pre>
-<p>And this is also pretty much it we only need to combine these functions and we are ready to save financial report into the database with the following function.</p>
+<p>You might have noticed, that function <code>getTitleFinReport</code> also adds <code>type</code> column to the data.frame. Financial entities can do their bookkeeping in two different styles. Double-entry bookkeeping and simple bookkeeping. As we want to download both styles, we need to differentiate between them and save each of them to their respective database tables. As there is no field in the response, which would tell us, which type of bookkeeping is used, we derive it from the number of fields in the assets part of the JSON.</p>
+<p>And this is pretty much it. We only need to combine these functions and we are ready to save the financial report into the database with the following function.</p>
 <pre class="r"><code>appendFinancialReport &lt;- function(finReport) {
   .appendType &lt;-
     function(x, finReportTitle) {
@@ -267,20 +266,20 @@ toCharDF &lt;- function(x) {
           appendIfMissing(finReportBase, &quot;financial_report_base&quot;, con)
           appendIfMissing(finReportTitle, &quot;financial_report_title&quot;, con)
           appendIfMissing(finReportsForFinStatement, &quot;financial_report_for_financial_statement&quot;, con)
-          appendIfMissing(getAktivaFinReport(finReport), .appendType(&quot;financial_report_assets&quot;, finReportTitle), con)
-          appendIfMissing(getPasivaFinReport(finReport), .appendType(&quot;financial_report_lae&quot;, finReportTitle), con)
-          appendIfMissing(getZSFinReport(finReport), .appendType(&quot;financial_report_is&quot;, finReportTitle), con)
+          appendIfMissing(getAssetsFinReport(finReport), .appendType(&quot;financial_report_assets&quot;, finReportTitle), con)
+          appendIfMissing(getLAEFinReport(finReport), .appendType(&quot;financial_report_lae&quot;, finReportTitle), con)
+          appendIfMissing(getISFinReport(finReport), .appendType(&quot;financial_report_is&quot;, finReportTitle), con)
           RPostgres::dbCommit(con)
         },
         error = function(e) {RPostgres::dbRollback(con)}
       )
   }
 }</code></pre>
-<p>As you can see, we have appending to the database wrapped in the <code>tryCatch</code> function. We do this, to keep transaction atomic. This means, that we will commit all the data into the database or nothing will occurs. So in case of the error, <code>dbRollback</code> is called and the transaction is reverted.</p>
+<p>As you can see, we have appending to the database wrapped in the <code>tryCatch</code> function. We do this, to keep transaction atomic. This means, that we will commit all the data into the database or nothing will occur. So in case of the error, <code>dbRollback</code> is called and the transaction is reverted.</p>
 </div>
 <div id="putting-it-all-together" class="section level1">
 <h1>Putting it all together</h1>
-<p>Now it is time to combine everything we have prepared, and start scraping data. Thanks to our modular design, this should be pretty easy. All we have to do now is to get all the IDs of financial reports, that has changed since certain date and then download each of them and save it into the database.</p>
+<p>Now it is time to combine everything we have prepared and start scraping data. Thanks to our modular design, this should be pretty easy. All we have to do now is to get all the IDs of financial reports, that have changed since a certain date and then download each of them and save it into the database.</p>
 <pre class="r"><code>getAllChangedFinancialReports(&quot;2020-05-01&quot;) %&gt;%
   .$result.id %&gt;%
   lapply(function(x) {
@@ -288,6 +287,6 @@ toCharDF &lt;- function(x) {
       appendFinancialReport()
   })
 </code></pre>
-<p>This should download all the financial report data which we can further analyse.</p>
+<p>And this is it, all it remains is to wait until all the financial reports are downloaded. Afterwards we can do further analysis of the data, but this might come in the future blog post :). Complete code for this package can be found in <a href="https://github.com/pbelai/RegisterOfFinancialStatements">this GitHub repository</a>.</p>
 </div>
 
