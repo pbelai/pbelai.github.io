@@ -26,104 +26,324 @@ random variable names, no documentation... There was even a public API, but for 
 
 So I have decided this is a great opportunity to see, how would I do things now, and finally do this code some justice and banish this abomination that I have once called code.
 
-### Public API
+# Public API
 
 First of all, we have to take a look on a public API endpoints and data model. Its full documentation is here (http://www.registeruz.sk/cruz-public/home/api). From the data model, we are interested in accounting entities and financial statements.
 It is also possible to see expected output from the endpoints, which we will use for preparing our database tables. 
 
-### Project structure
+# Project structure
 
 This time, things should be done right, that's why I have decided to create R package. This is a first step, that will give this project initial structure. This also gives developer bigger control over which packages are used, which functions we want to export and a lot more. All these great features come at almost no cost, so there is no reason not to create R package. If you haven't created R package before, Hadley has a great tutorial (http://r-pkgs.had.co.nz/) how to do things right.
 
-In the previous project, data were saved as .csv files which were the manually concated. Now we want to have downloaded data stored in a reasonable way. Because of the relational nature of the data, we will use PostgreSQL database. (https://www.enterprisedb.com/) For connecting to the database we will use THIS package.
+In the previous project, data were saved as .csv files which were the manually concated. Now we want to have downloaded data stored in a reasonable way. Because of the relational nature of the data, we will use PostgreSQL database. (https://www.enterprisedb.com/)
 
-It is possible to see that we will have to separate this will have to address two separate concerns:
+# Preparing database
 
-* Communication with API
-* Database communication
-* Scraping the data
-
-After you have created new R package and have installed PostgreSQL, we can finally start scraping the data. 
-
-### Preparing database
+After you install your PostgreSQL database, we need to create tables, where we will store our data. All the tables can be created with the following script:
 
 ```{sql eval=FALSE}
-CREATE TABLE accounting_entity (
-	id VARCHAR (10) PRIMARY KEY,  --! EJ
-	obdobieOd DATE,
-	obdobieDo DATE,
-	datumPodania DATE,
-	datumZostavenia DATE,
-	datumSchvalenia DATE,
-	datumZostaveniaK DATE,
-	datumPrilozeniaSpravyAuditora DATE,
-	nazovUJ VARCHAR (500),
-	ico CHAR (8),
-	dic CHAR (10),
-	nazovFondu VARCHAR (500),
-	leiKod VARCHAR (20),
-	idUJ VARCHAR (10),
-	konsolidovana BOOLEAN,
-	konsolidovanaZavierkaUstrednejStatnejSpravy BOOLEAN,
-	suhrnnaUctovnaZavierkaVerejnejSpravy BOOLEAN,
-	typ VARCHAR (15),
-	idUctovnychVykazov VARCHAR (10),
-	zdrojDat VARCHAR (30),
-	datumPoslednejUpravy DATE 
+CREATE TABLE financial_report_for_financial_statement (
+	id serial PRIMARY KEY,
+	id_financial_statement VARCHAR (10),
+	id_financial_report VARCHAR (10)
 );
 
-
-CREATE TABLE accounting_entity (
-	id VARCHAR (10) PRIMARY KEY,  --! EJ
-	ico CHAR (8),
-	dic CHAR (10),
-	sid VARCHAR (5),
-	nazovUJ VARCHAR (500),
-	mesto VARCHAR (200),
-	ulica VARCHAR (200),
-	psc VARCHAR (10),
-	datumZalozenia DATE,
-	datumZrusenia DATE,
-	pravnaForma VARCHAR (100),
-	skNace VARCHAR (100),
-	velkostOrganizacie VARCHAR (100),
-	druhVlastnictva VARCHAR (100),
-	kraj VARCHAR (100),
-	okres VARCHAR (100),
-	sidlo VARCHAR (100),
-	konsolidovana bool,
-	idUctovnychZavierok VARCHAR (10),
-	idVyrocnychSprav VARCHAR (10),
-	zdrojDat VARCHAR (30),
-	datumPoslednejUpravy DATE 
+CREATE TABLE financial_report_title (
+	id serial PRIMARY KEY,
+    id_financial_report VARCHAR (10),
+    nazovUctovnejJednotky VARCHAR (500),
+    ico VARCHAR (8),
+    dic VARCHAR (10),             
+    adresa VARCHAR (500),
+    skNace VARCHAR (100),
+    typZavierky VARCHAR (30),
+    obdobieOd DATE,
+    obdobieDo DATE,
+    predchadzajuceObdobieOd DATE,
+    predchadzajuceObdobieDo DATE,
+    datumSchvalenia DATE,
+    datumZostavenia DATE,
+    oznacenieObchodnehoRegistra VARCHAR (100),
+    type VARCHAR (3)
 );
+
+CREATE TABLE financial_report_base (
+	id serial PRIMARY KEY,
+    id_financial_report VARCHAR (10),
+    pristupnostDat VARCHAR (20),
+	datumPoslednejUpravy DATE,
+	zdrojDat VARCHAR(20),
+	kodDanovehoUradu VARCHAR(20),
+	idSablony VARCHAR(20)
+);
+
+DO language 'plpgsql'
+$$
+DECLARE mujAkt text := 'CREATE TABLE financial_report_assets_muj(id serial PRIMARY KEY, id_financial_report varchar(10),'
+	|| string_agg('V' || i::text || ' integer', ',') || ');'
+	FROM generate_series(1,46) As i;
+DECLARE mujPas text := 'CREATE TABLE financial_report_lae_muj(id serial PRIMARY KEY, id_financial_report varchar(10),'
+	|| string_agg('V' || i::text || ' integer', ',') || ');'
+	FROM generate_series(1,44) As i;
+DECLARE mujZS text := 'CREATE TABLE financial_report_is_muj(id serial PRIMARY KEY, id_financial_report varchar(10),'
+	|| string_agg('V' || i::text || ' integer', ',') || ');'
+	FROM generate_series(1,76) As i;
+
+DECLARE podAkt text := 'CREATE TABLE financial_report_assets_pod(id serial PRIMARY KEY, id_financial_report varchar(10),'
+	|| string_agg('V' || i::text || ' integer', ',') || ');'
+	FROM generate_series(1,312) As i;
+DECLARE podPas text := 'CREATE TABLE financial_report_lae_pod(id serial PRIMARY KEY, id_financial_report varchar(10),'
+	|| string_agg('V' || i::text || ' integer', ',') || ');'
+	FROM generate_series(1,134) As i;
+DECLARE podZS text := 'CREATE TABLE financial_report_is_pod(id serial PRIMARY KEY, id_financial_report varchar(10),'
+	|| string_agg('V' || i::text || ' integer', ',') || ');'
+	FROM generate_series(1,122) As i;
+
+
+BEGIN
+  EXECUTE mujAkt;
+	EXECUTE mujPas;
+	EXECUTE mujZS;
+	
+	EXECUTE podAkt;
+	EXECUTE podPas;
+	EXECUTE podZS;
+END;
+$$ ;
 ```
 
-### Communication with API
+The script will create all the tables that we will need for the downloaded data. Now, it's time to prepare code that will fill the tables with data.
 
+# Communication with API
 
-### Database communication
+Now it is time to prepare funtions, which will communicate with the API. Natural way to communicate with API would be to use different type of HTTP request methods. However this is not the case. If you try `httr::GET` it will fail, however we can use function `readLines` from base package. This will return the content of the website which we can then transform into nice object using `rjson::fromJSON`.
 
+We can create a nice little function for this, as we will use this a lot.
 
-### Putting it all together
-
-
-
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{R eval=FALSE}
+getObjectFromURL <- function(url) {
+  readLines(url, warn = FALSE, encoding = "UTF-8") %>% 
+    rjson::fromJSON()
+}
 ```
 
-## Including Plots
+For creating URLs with queries, We could use `paste` for each each endpoint with all the parameters, however, this solution would be really error prone and could get messy soon. For this we can also use small utility function, which will prepare the URL.
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r, eval=FALSE}
+createUrl <- function(endpoint, ..., baseUrl = "http://www.registeruz.sk/cruz-public/api") {
+  params <- list(...)
+  params <- paste(names(params), params, sep = "=")
+  if (length(params) == 0) {
+    paste0(baseUrl, endpoint)
+  } else {
+    paste0(baseUrl, endpoint, "?", paste0(unlist(params), collapse = "&"))
+  }
+}
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+And this last function, which we will use for downloading data is a little bit hacky. While batch downloading, I have noticed, that querying some URLs will throw error, but if we query the same URL next time, it will return the data. So this functions will try to query URL a few times and it will return `NULL` only if it fails each time.
+
+```{r, eval=FALSE}
+tryUntilSuccess <- function(url, numberOfTries = 20, fun = getObjectFromURL) {
+  if (numberOfTries == 0) {
+    warning("Unable to read from: ", url)
+    NULL
+  } else {
+    res <- tryCatch(
+      fun(url),
+      error = function(x) {tryUntilSuccess(url, numberOfTries - 1, fun)}
+    )
+    res
+  }
+}
+
+```
+
+After we put all this stuff together, we can create nice small functions for communicating with endpoints.
+
+```{R eval=FALSE}
+getChangedFinancialReports <- function(from = "2019-01-01", maxNumber = 10000, afterId = 1) {
+  createUrl("/uctovne-vykazy", "zmenene-od" = from, "max-zaznamov" = maxNumber, "pokracovat-za-id" = afterId) %>%
+    tryUntilSuccess()
+}
+
+getFinancialReportDetails <- function(id) {
+  createUrl("/uctovny-vykaz", id = id) %>%
+    tryUntilSuccess()
+}
+
+```
+  
+# Database communication
+
+Next we need to prepare functions, which will save downloaded data to the database. We pretty much only need database connection function, which will be apending data into the database. Database connection is defined as global variable here as I have wanted to create something similar to singleton. I am not fully satisfied with this solution, as it misses encapsulation, so I will probably look how to approach this stuff in the future.
+
+```{R eval=FALSE}
+DB_CONNECTION <- NULL
+
+
+getDBConnection <- function() {
+  db <- "postgres"
+  host_db <- "127.0.0.1"
+  db_port <- "5432"
+  db_user <- "postgres"
+  db_password <- "admin"
+  if (is.null(DB_CONNECTION)) {
+    message("Opening new DB connection")
+    DB_CONNECTION <<-
+      DBI::dbConnect(
+        RPostgres::Postgres(),
+        dbname = db,
+        host = host_db,
+        port = db_port,
+        user = db_user,
+        password = db_password
+      )
+  }
+
+  DB_CONNECTION
+}
+
+
+appendIfMissing <- function(x, tableName, con) {
+  whereStatement <- lapply(names(x), function(name) {
+    glue::glue_sql("{`name`} NOT IN ({x[[name]]*})", .con = con)
+  }) %>% unlist() %>% glue::glue_collapse(sep = " OR ")
+
+  res <- glue::glue_sql(paste("SELECT * FROM {`tableName`}"), .con = con) %>%
+    RPostgres::dbGetQuery(con, .)
+  names(x) <- tolower(names(x))
+  toAppend <- dplyr::anti_join(toCharDF(x), toCharDF(res[names(x)]), by = names(x))
+
+  if (nrow(toAppend) > 0) {
+    nrOfAppendedRows <- RPostgres::dbAppendTable(con, tableName, toAppend, row.names = NULL)
+    usethis::ui_info(paste("Appended missing values to table:", nrOfAppendedRows))
+  }
+}
+```
+
+Except of these functions, that will make our communication with DB easier, we will also need to prepare data to be appended into the database. We are going to split each financial report into multiple different parts. Base part of the financial report, which specifies where the data comes from and which template was used. Then we have title page of the report, which contains informations about financial unit. Final parts that we will extract are assets, liabilities and equity, and income statement of the financial entity.
+
+For these things, we will use following functions:
+
+```{R eval=FALSE}
+getBaseFinReport <- function(finReport) {
+  finReport[!names(finReport) %in% c("prilohy", "obsah", "idUctovnejZavierky", "id")] %>%
+    as.data.frame(stringsAsFactors = FALSE) %>%
+    cbind(id_financial_report = finReport$id)
+}
+
+getTitleFinReport <- function(finReport) {
+  .normalizeDate <- function(x) {
+    if (!is.null(x) && !is.na(x)) addDayToDate(x) else x
+  }
+
+  ncol(getAktivaFinReport(finReport))
+
+  title <- finReport$obsah$titulnaStrana
+  title$adresa <- paste(title$adresa, collapse = " ")
+  if (ncol(getAktivaFinReport(finReport)) == 47) {
+    title$type <- "MUJ"
+  } else if (ncol(getAktivaFinReport(finReport)) == 313){
+    title$type <- "POD"
+  }
+
+  title <- title %>% as.data.frame(stringsAsFactors = FALSE)
+  title$obdobieOd <- .normalizeDate(title$obdobieOd)
+  title$obdobieDo <- .normalizeDate(title$obdobieDo)
+  title$predchadzajuceObdobieDo <- .normalizeDate(title$predchadzajuceObdobieDo)
+  title$predchadzajuceObdobieOd <- .normalizeDate(title$predchadzajuceObdobieOd)
+
+  cbind(id_financial_report = finReport$id, title)
+}
+
+getNumericReportData <- function(finReport, position) {
+  finReport$obsah$tabulky[[position]]$data %>%
+    as.numeric() %>%
+    t() %>%
+    as.data.frame() %>%
+    cbind(id_financial_report = finReport$id)
+}
+
+getAktivaFinReport <- function(finReport) {
+  getNumericReportData(finReport, 1)
+}
+
+getPasivaFinReport <- function(finReport) {
+  getNumericReportData(finReport, 2)
+}
+
+getZSFinReport <- function(finReport) {
+  getNumericReportData(finReport, 3)
+}
+
+addDayToDate <- function(x, day = "01") {
+  paste(x, day, sep = "-")
+}
+
+toCharDF <- function(x) {
+  x[] <- lapply(x, as.character)
+  x
+}
+
+```
+
+And this is also pretty much it we only need to combine these functions and we are ready to save financial report into the database with the following function.
+
+```{R eval=FALSE}
+appendFinancialReport <- function(finReport) {
+  .appendType <-
+    function(x, finReportTitle) {
+      if (finReportTitle$type == "MUJ")
+        paste0(x, "_muj")
+      else
+        paste0(x, "_pod")
+    }
+  message("Process report:", finReport$id)
+
+  con <- getDBConnection()
+  finReportBase <- getBaseFinReport(finReport)
+  finReportTitle <- getTitleFinReport(finReport)
+  if (!is.null(finReportTitle$type)) {
+
+    finReportsForFinStatement <- data.frame(
+      id_financial_report = finReport$id,
+      id_financial_statement = finReport$idUctovnejZavierky,
+      stringsAsFactors = FALSE
+    )
+  
+    message("Add report with id:", finReport$id)
+      tryCatch(
+        {
+          RPostgres::dbBegin(con)
+          appendIfMissing(finReportBase, "financial_report_base", con)
+          appendIfMissing(finReportTitle, "financial_report_title", con)
+          appendIfMissing(finReportsForFinStatement, "financial_report_for_financial_statement", con)
+          appendIfMissing(getAktivaFinReport(finReport), .appendType("financial_report_assets", finReportTitle), con)
+          appendIfMissing(getPasivaFinReport(finReport), .appendType("financial_report_lae", finReportTitle), con)
+          appendIfMissing(getZSFinReport(finReport), .appendType("financial_report_is", finReportTitle), con)
+          RPostgres::dbCommit(con)
+        },
+        error = function(e) {RPostgres::dbRollback(con)}
+      )
+  }
+}
+```
+
+As you can see, we have appending to the database wrapped in the `tryCatch` function. We do this, to keep transaction atomic. This means, that we will commit all the data into the database or nothing will occurs. So in case of the error, `dbRollback` is called and the transaction is reverted.
+
+# Putting it all together
+
+Now it is time to combine everything we have prepared, and start scraping data. Thanks to our modular design, this should be pretty easy. All we have to do now is to get all the IDs of financial reports, that has changed since certain date and then download each of them and save it into the database.
+
+```{R, eval=FALSE}
+getAllChangedFinancialReports("2020-05-01") %>%
+  .$result.id %>%
+  lapply(function(x) {
+    getFinancialReportDetails(x) %>%
+      appendFinancialReport()
+  })
+
+```
+
+This should download all the financial report data which we can further analyse.
