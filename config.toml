@@ -60,7 +60,7 @@ enableEmoji = true
         weight = 4
     [languages.en.params]
       # site description
-      description = "About LoveIt Theme"
+      description = "Peter Belai blog"
       # site keywords
       keywords = ["Theme", "Hugo"]
       # App icon config

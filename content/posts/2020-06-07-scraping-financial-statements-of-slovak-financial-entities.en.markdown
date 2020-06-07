@@ -1,26 +1,28 @@
 ---
 title: Scraping financial statements of Slovak financial entities
 author: Peter Belai
-date: '2020-06-01'
+date: '2020-06-07'
 slug: scraping-financial-statements-of-slovak-financial-entities
 categories:
   - R
 tags:
   - R
-  - Web Scraping
-lastmod: '2020-06-01T21:01:03+02:00'
+subtitle: ''
+lastmod: '2020-06-07T13:25:44+02:00'
 authorLink: ''
+description: ''
 hiddenFromHomePage: no
 hiddenFromSearch: no
 featuredImage: ''
 featuredImagePreview: ''
+toc:
+  enable: yes
 math:
   enable: no
 lightgallery: no
+license: ''
 ---
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(collapse = TRUE)
-```
+
 It is always interesting to go back to your older projects. You can spot, how is your coding style evolving, and how you, as a programmer, are improving. Recently, I had to go through the code of one of my first projects in R and boy, was it a mess. It was supposed to download  Financial Statements of all the businesses in Slovakia for a certain year. It worked, barely. But trying to understand the code was a pain. No functions, 
 random variable names, no documentation... There was even a public API, but for some reason (and I am sure, that at a time It was a "great" one), I have decided not to use it but to scrape web pages directly.
 
@@ -40,7 +42,8 @@ In the previous project, data were saved as .csv files which were the manually c
 
 After you install your PostgreSQL database, we need to create tables, where we will store our data. All the tables can be created with the following script:
 
-```{sql eval=FALSE}
+
+```sql
 CREATE TABLE financial_report_for_financial_statement (
 	id serial PRIMARY KEY,
 	id_financial_statement VARCHAR (10),
@@ -119,7 +122,8 @@ First we create functions, which will communicate with the API. A natural way to
 
 We can create a nice little function for this, as we will use this a lot.
 
-```{R eval=FALSE}
+
+```r
 getObjectFromURL <- function(url) {
   readLines(url, warn = FALSE, encoding = "UTF-8") %>% 
     rjson::fromJSON()
@@ -128,7 +132,8 @@ getObjectFromURL <- function(url) {
 
 For creating URLs with queries, We could use `paste` for each endpoint with all the parameters, however, this solution would be error-prone and could get messy soon. For this, we can also use a small utility function, which will prepare the URL.
 
-```{r, eval=FALSE}
+
+```r
 createUrl <- function(endpoint, ..., baseUrl = "http://www.registeruz.sk/cruz-public/api") {
   params <- list(...)
   params <- paste(names(params), params, sep = "=")
@@ -142,7 +147,8 @@ createUrl <- function(endpoint, ..., baseUrl = "http://www.registeruz.sk/cruz-pu
 
 And this last function, which we will use for downloading data is a little bit hacky. While batch downloading, I have noticed, that querying some URLs will throw an error, but if we query the same URL next time, it will return the data. So this function will try to query URL a few times and it will return `NULL` only if it fails each time.
 
-```{r, eval=FALSE}
+
+```r
 tryUntilSuccess <- function(url, numberOfTries = 20, fun = getObjectFromURL) {
   if (numberOfTries == 0) {
     warning("Unable to read from: ", url)
@@ -155,12 +161,12 @@ tryUntilSuccess <- function(url, numberOfTries = 20, fun = getObjectFromURL) {
     res
   }
 }
-
 ```
 
 After we put all this stuff together, we can create nice small functions for communicating with endpoints.
 
-```{R eval=FALSE}
+
+```r
 getChangedFinancialReports <- function(from = "2019-01-01", maxNumber = 10000, afterId = 1) {
   createUrl("/uctovne-vykazy", "zmenene-od" = from, "max-zaznamov" = maxNumber, "pokracovat-za-id" = afterId) %>%
     tryUntilSuccess()
@@ -170,14 +176,14 @@ getFinancialReportDetails <- function(id) {
   createUrl("/uctovny-vykaz", id = id) %>%
     tryUntilSuccess()
 }
-
 ```
   
 # Database communication
 
 Next, we need to prepare functions, which will save downloaded data to the database. We pretty much only need a database connection function, which will be appending data into the database. The database connection is defined as a global variable here as I have wanted to create something similar to a singleton pattern. I am not fully satisfied with this solution, as it misses encapsulation, so I will probably look at how to approach this stuff in the future.
 
-```{R eval=FALSE}
+
+```r
 DB_CONNECTION <- NULL
 
 
@@ -225,7 +231,8 @@ Except for these functions, that will make our communication with DB easier, we 
 
 For these things, we will use the following functions:
 
-```{R eval=FALSE}
+
+```r
 getBaseFinReport <- function(finReport) {
   finReport[!names(finReport) %in% c("prilohy", "obsah", "idUctovnejZavierky", "id")] %>%
     as.data.frame(stringsAsFactors = FALSE) %>%
@@ -284,14 +291,14 @@ toCharDF <- function(x) {
   x[] <- lapply(x, as.character)
   x
 }
-
 ```
 
 You might have noticed, that function `getTitleFinReport` also adds `type` column to the data.frame. Financial entities can do their bookkeeping in two different styles. Double-entry bookkeeping and simple bookkeeping. As we want to download both styles, we need to differentiate between them and save each of them to their respective database tables. As there is no field in the response, which would tell us, which type of bookkeeping is used, we derive it from the number of fields in the assets part of the JSON.
 
 And this is pretty much it. We only need to combine these functions and we are ready to save the financial report into the database with the following function.
 
-```{R eval=FALSE}
+
+```r
 appendFinancialReport <- function(finReport) {
   .appendType <-
     function(x, finReportTitle) {
@@ -337,14 +344,14 @@ As you can see, we have appending to the database wrapped in the `tryCatch` func
 
 Now it is time to combine everything we have prepared and start scraping data. Thanks to our modular design, this should be pretty easy. All we have to do now is to get all the IDs of financial reports, that have changed since a certain date and then download each of them and save it into the database.
 
-```{R, eval=FALSE}
+
+```r
 getAllChangedFinancialReports("2020-05-01") %>%
   .$result.id %>%
   lapply(function(x) {
     getFinancialReportDetails(x) %>%
       appendFinancialReport()
   })
-
 ```
 
 And this is it, all it remains is to wait until all the financial reports are downloaded. Afterwards we can do further analysis of the data, but this might come in the future blog post :). Complete code for this package can be found in [this GitHub repository](https://github.com/pbelai/RegisterOfFinancialStatements).
