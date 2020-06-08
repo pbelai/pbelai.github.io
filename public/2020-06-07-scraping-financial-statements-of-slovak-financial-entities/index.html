@@ -11,7 +11,7 @@
 <meta property="og:url" content="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" />
 <meta property="og:image" content="/logo.png"/>
 <meta property="article:published_time" content="2020-06-07T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-06-07T13:25:44+02:00" />
+<meta property="article:modified_time" content="2020-06-07T13:29:58+02:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/logo.png"/>
 
@@ -34,8 +34,8 @@
                             "url": "\/images\/Apple-Devices-Preview.png",
                             "width":  3200 ,
                             "height":  2048 
-                        }],"genre": "posts","keywords": "R","wordcount":  2062 ,
-        "url": "\/2020-06-07-scraping-financial-statements-of-slovak-financial-entities\/","datePublished": "2020-06-07T00:00:00+00:00","dateModified": "2020-06-07T13:25:44+02:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+                        }],"genre": "posts","keywords": "R, Data-scraping, PostgreSQL","wordcount":  2062 ,
+        "url": "\/2020-06-07-scraping-financial-statements-of-slovak-financial-entities\/","datePublished": "2020-06-07T00:00:00+00:00","dateModified": "2020-06-07T13:29:58+02:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
             "@type": "Organization",
             "name": "xxxx","logo": {
                     "@type": "ImageObject",
@@ -84,20 +84,11 @@
     <div id="search-dropdown-mobile"></div>
 </div>
 <main class="main">
-                <div class="container"><div class="toc" id="toc-auto">
-            <h2 class="toc-title">Contents</h2>
-            <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animated flipInX">Scraping financial statements of Slovak financial entities</h1><div class="post-meta">
-            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Peter Belai</a></span>&nbsp;<span class="post-category">included in <a href="/categories/r/"><i class="far fa-folder fa-fw"></i>R</a></span></div>
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Scraping financial statements of Slovak financial entities</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Peter Belai</a></span>&nbsp;<span class="post-category">included in <a href="/categories/data-scraping/"><i class="far fa-folder fa-fw"></i>Data-scraping</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-06-07">2020-06-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;2062 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;10 minutes&nbsp;</div>
-        </div><div class="details toc" id="toc-static"  kept="">
-                <div class="details-summary toc-title">
-                    <span>Contents</span>
-                    <span><i class="details-icon fas fa-angle-right"></i></span>
-                </div>
-                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
-            </div><div class="content" id="content"><p>It is always interesting to go back to your older projects. You can spot, how is your coding style evolving, and how you, as a programmer, are improving. Recently, I had to go through the code of one of my first projects in R and boy, was it a mess. It was supposed to download  Financial Statements of all the businesses in Slovakia for a certain year. It worked, barely. But trying to understand the code was a pain. No functions, 
+        </div><div class="content" id="content"><p>It is always interesting to go back to your older projects. You can spot, how is your coding style evolving, and how you, as a programmer, are improving. Recently, I had to go through the code of one of my first projects in R and boy, was it a mess. It was supposed to download  Financial Statements of all the businesses in Slovakia for a certain year. It worked, barely. But trying to understand the code was a pain. No functions, 
 random variable names, no documentation&hellip; There was even a public API, but for some reason (and I am sure, that at a time It was a &ldquo;great&rdquo; one), I have decided not to use it but to scrape web pages directly.</p>
 <p>So I have decided this is a great opportunity to see, how would I do things now, and finally do this code some justice and banish this abomination that I have once called code.</p>
 <h1 id="public-api">Public API</h1>
@@ -671,7 +662,8 @@ It is also possible to see an expected output from the endpoints, which we will 
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2020-06-07</span>
+                <span>Updated on 2020-06-07&nbsp;<a class="git-hash" href="https://github.com/dillonzq/LoveIt/commit/965da84b26245787f9d30d656f2c9285342dd070" target="_blank" title="commit by Peter Belai(peter.belai@gmail.com) 965da84b26245787f9d30d656f2c9285342dd070: changes to rmarkdown from rmd">
+                                    <i class="fas fa-hashtag fa-fw"></i>965da84</a></span>
             </div>
             <div class="post-info-license"></div>
         </div>
@@ -680,13 +672,13 @@ It is also possible to see an expected output from the endpoints, which we will 
                             <a class="link-to-markdown" href="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/index.md" target="_blank">Read Markdown</a>
                         </span></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" data-title="Scraping financial statements of Slovak financial entities" data-hashtags="R"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" data-hashtag="R"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/"><i class="fab fa-linkedin fa-fw"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" data-title="Scraping financial statements of Slovak financial entities"><i class="fab fa-hacker-news fa-fw"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" data-title="Scraping financial statements of Slovak financial entities" data-hashtags="R,Data-scraping,PostgreSQL"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" data-hashtag="R"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/"><i class="fab fa-linkedin fa-fw"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" data-title="Scraping financial statements of Slovak financial entities"><i class="fab fa-hacker-news fa-fw"></i></a></span>
             </div>
         </div>
     </div>
 
     <div class="post-info-more">
-        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/r/">R</a></section>
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/r/">R</a>,&nbsp;<a href="/tags/data-scraping/">Data-scraping</a>,&nbsp;<a href="/tags/postgresql/">PostgreSQL</a></section>
         <section>
             <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
         </section>
@@ -694,9 +686,7 @@ It is also possible to see an expected output from the endpoints, which we will 
 
     <div class="post-nav"></div>
 </div>
-<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
-                Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript">Disqus</a>.
-            </noscript></div></article></div>
+</article></div>
             </main><footer class="footer">
         <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.71.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
                 </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Peter Belai</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
@@ -708,5 +698,5 @@ It is also possible to see an expected output from the endpoints, which we will 
             </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw"></i>
             </a>
-        </div><script type="text/javascript" src="https://pbelai.disqus.com/embed.js" defer></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
 </html>

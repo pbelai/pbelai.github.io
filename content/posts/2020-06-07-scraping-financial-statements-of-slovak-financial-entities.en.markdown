@@ -4,9 +4,11 @@ author: Peter Belai
 date: '2020-06-07'
 slug: scraping-financial-statements-of-slovak-financial-entities
 categories:
-  - R
+  - Data-scraping
 tags:
   - R
+  - Data-scraping
+  - PostgreSQL
 subtitle: ''
 lastmod: '2020-06-07T13:25:44+02:00'
 authorLink: ''
@@ -16,7 +18,7 @@ hiddenFromSearch: no
 featuredImage: ''
 featuredImagePreview: ''
 toc:
-  enable: yes
+  enable: no
 math:
   enable: no
 lightgallery: no
