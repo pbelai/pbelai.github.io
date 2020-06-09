@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Scraping financial statements of Slovak financial entities - Peter Belai - R and data blog</title><meta name="Description" content="Peter Belai blog"><meta property="og:title" content="Scraping financial statements of Slovak financial entities" />
+<meta property="og:description" content="It is always interesting to go back to your older projects. You can spot, how is your coding style evolving, and how you, as a programmer, are improving. Recently, I had to go through the code of one of my first projects in R and boy, was it a mess. It was supposed to download Financial Statements of all the businesses in Slovakia for a certain year. It worked, barely. But trying to understand the code was a pain." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" />
+<meta property="og:image" content="/logo.png"/>
+<meta property="article:published_time" content="2020-06-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-06-08T21:44:53+02:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/logo.png"/>
+
+<meta name="twitter:title" content="Scraping financial statements of Slovak financial entities"/>
+<meta name="twitter:description" content="It is always interesting to go back to your older projects. You can spot, how is your coding style evolving, and how you, as a programmer, are improving. Recently, I had to go through the code of one of my first projects in R and boy, was it a mess. It was supposed to download Financial Statements of all the businesses in Slovakia for a certain year. It worked, barely. But trying to understand the code was a pain."/>
+<meta name="application-name" content="Peter Belai">
+<meta name="apple-mobile-web-app-title" content="Peter Belai"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Scraping financial statements of Slovak financial entities",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "\/2020-06-07-scraping-financial-statements-of-slovak-financial-entities\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "R, Data-scraping, PostgreSQL","wordcount":  2062 ,
+        "url": "\/2020-06-07-scraping-financial-statements-of-slovak-financial-entities\/","datePublished": "2020-06-07T00:00:00+00:00","dateModified": "2020-06-08T21:44:53+02:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "Peter Belai"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Peter Belai - R and data blog">Peter Belai</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Peter Belai - R and data blog">Peter Belai</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Scraping financial statements of Slovak financial entities</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Peter Belai</a></span>&nbsp;<span class="post-category">included in <a href="/categories/data-scraping/"><i class="far fa-folder fa-fw"></i>Data-scraping</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-06-07">2020-06-07</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;2062 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;10 minutes&nbsp;</div>
+        </div><div class="content" id="content"><p>It is always interesting to go back to your older projects. You can spot, how is your coding style evolving, and how you, as a programmer, are improving. Recently, I had to go through the code of one of my first projects in R and boy, was it a mess. It was supposed to download  Financial Statements of all the businesses in Slovakia for a certain year. It worked, barely. But trying to understand the code was a pain. No functions, 
+random variable names, no documentation&hellip; There was even a public API, but for some reason (and I am sure, that at a time It was a &ldquo;great&rdquo; one), I have decided not to use it but to scrape web pages directly.</p>
+<p>So I have decided this is a great opportunity to see, how would I do things now, and finally do this code some justice and banish this abomination that I have once called code.</p>
+<h1 id="public-api">Public API</h1>
+<p>First of all, we have to take a look at a public API endpoints and data model. Its full documentation can be found <a href="http://www.registeruz.sk/cruz-public/home/api" target="_blank" rel="noopener noreffer">here</a>. From the data model, we are interested in accounting entities and financial statements.
+It is also possible to see an expected output from the endpoints, which we will use for preparing our database tables.</p>
+<h1 id="project-structure">Project structure</h1>
+<p>This time, things should be done right, that&rsquo;s why I have decided to create an R package. This is a first step, that will give this project an initial structure. This also gives developer bigger control over which packages are used, which functions we want to export, and a lot more. All these great features come at almost no cost, so there is no reason not to create an R package. If you haven&rsquo;t created an R package before, Hadley has a great <a href="http://r-pkgs.had.co.nz/" target="_blank" rel="noopener noreffer">tutorial</a> on how to do things right.</p>
+<p>In the previous project, data were saved as .csv files which were the manually concated. Now we want to have downloaded data stored reasonably. Because of the relational nature of the data, we will use the <a href="https://www.enterprisedb.com/" target="_blank" rel="noopener noreffer">PostgreSQL database</a>.</p>
+<h1 id="preparing-database">Preparing database</h1>
+<p>After you install your PostgreSQL database, we need to create tables, where we will store our data. All the tables can be created with the following script:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">financial_report_for_financial_statement</span> <span class="p">(</span>
+	<span class="n">id</span> <span class="nb">serial</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
+	<span class="n">id_financial_statement</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+	<span class="n">id_financial_report</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">financial_report_title</span> <span class="p">(</span>
+	<span class="n">id</span> <span class="nb">serial</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
+    <span class="n">id_financial_report</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+    <span class="n">nazovUctovnejJednotky</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">500</span><span class="p">),</span>
+    <span class="n">ico</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">8</span><span class="p">),</span>
+    <span class="n">dic</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">10</span><span class="p">),</span>             
+    <span class="n">adresa</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">500</span><span class="p">),</span>
+    <span class="n">skNace</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+    <span class="n">typZavierky</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">30</span><span class="p">),</span>
+    <span class="n">obdobieOd</span> <span class="nb">DATE</span><span class="p">,</span>
+    <span class="n">obdobieDo</span> <span class="nb">DATE</span><span class="p">,</span>
+    <span class="n">predchadzajuceObdobieOd</span> <span class="nb">DATE</span><span class="p">,</span>
+    <span class="n">predchadzajuceObdobieDo</span> <span class="nb">DATE</span><span class="p">,</span>
+    <span class="n">datumSchvalenia</span> <span class="nb">DATE</span><span class="p">,</span>
+    <span class="n">datumZostavenia</span> <span class="nb">DATE</span><span class="p">,</span>
+    <span class="n">oznacenieObchodnehoRegistra</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+    <span class="k">type</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">financial_report_base</span> <span class="p">(</span>
+	<span class="n">id</span> <span class="nb">serial</span> <span class="k">PRIMARY</span> <span class="k">KEY</span><span class="p">,</span>
+    <span class="n">id_financial_report</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+    <span class="n">pristupnostDat</span> <span class="nb">VARCHAR</span> <span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+	<span class="n">datumPoslednejUpravy</span> <span class="nb">DATE</span><span class="p">,</span>
+	<span class="n">zdrojDat</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+	<span class="n">kodDanovehoUradu</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span>
+	<span class="n">idSablony</span> <span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">DO</span> <span class="k">language</span> <span class="s1">&#39;plpgsql&#39;</span>
+<span class="err">$$</span>
+<span class="k">DECLARE</span> <span class="n">mujAkt</span> <span class="nb">text</span> <span class="p">:</span><span class="o">=</span> <span class="s1">&#39;CREATE TABLE financial_report_assets_muj(id serial PRIMARY KEY, id_financial_report varchar(10),&#39;</span>
+	<span class="o">||</span> <span class="n">string_agg</span><span class="p">(</span><span class="s1">&#39;V&#39;</span> <span class="o">||</span> <span class="n">i</span><span class="p">::</span><span class="nb">text</span> <span class="o">||</span> <span class="s1">&#39; integer&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;);&#39;</span>
+	<span class="k">FROM</span> <span class="n">generate_series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">46</span><span class="p">)</span> <span class="k">As</span> <span class="n">i</span><span class="p">;</span>
+<span class="k">DECLARE</span> <span class="n">mujPas</span> <span class="nb">text</span> <span class="p">:</span><span class="o">=</span> <span class="s1">&#39;CREATE TABLE financial_report_lae_muj(id serial PRIMARY KEY, id_financial_report varchar(10),&#39;</span>
+	<span class="o">||</span> <span class="n">string_agg</span><span class="p">(</span><span class="s1">&#39;V&#39;</span> <span class="o">||</span> <span class="n">i</span><span class="p">::</span><span class="nb">text</span> <span class="o">||</span> <span class="s1">&#39; integer&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;);&#39;</span>
+	<span class="k">FROM</span> <span class="n">generate_series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">44</span><span class="p">)</span> <span class="k">As</span> <span class="n">i</span><span class="p">;</span>
+<span class="k">DECLARE</span> <span class="n">mujZS</span> <span class="nb">text</span> <span class="p">:</span><span class="o">=</span> <span class="s1">&#39;CREATE TABLE financial_report_is_muj(id serial PRIMARY KEY, id_financial_report varchar(10),&#39;</span>
+	<span class="o">||</span> <span class="n">string_agg</span><span class="p">(</span><span class="s1">&#39;V&#39;</span> <span class="o">||</span> <span class="n">i</span><span class="p">::</span><span class="nb">text</span> <span class="o">||</span> <span class="s1">&#39; integer&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;);&#39;</span>
+	<span class="k">FROM</span> <span class="n">generate_series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">76</span><span class="p">)</span> <span class="k">As</span> <span class="n">i</span><span class="p">;</span>
+
+<span class="k">DECLARE</span> <span class="n">podAkt</span> <span class="nb">text</span> <span class="p">:</span><span class="o">=</span> <span class="s1">&#39;CREATE TABLE financial_report_assets_pod(id serial PRIMARY KEY, id_financial_report varchar(10),&#39;</span>
+	<span class="o">||</span> <span class="n">string_agg</span><span class="p">(</span><span class="s1">&#39;V&#39;</span> <span class="o">||</span> <span class="n">i</span><span class="p">::</span><span class="nb">text</span> <span class="o">||</span> <span class="s1">&#39; integer&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;);&#39;</span>
+	<span class="k">FROM</span> <span class="n">generate_series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">312</span><span class="p">)</span> <span class="k">As</span> <span class="n">i</span><span class="p">;</span>
+<span class="k">DECLARE</span> <span class="n">podPas</span> <span class="nb">text</span> <span class="p">:</span><span class="o">=</span> <span class="s1">&#39;CREATE TABLE financial_report_lae_pod(id serial PRIMARY KEY, id_financial_report varchar(10),&#39;</span>
+	<span class="o">||</span> <span class="n">string_agg</span><span class="p">(</span><span class="s1">&#39;V&#39;</span> <span class="o">||</span> <span class="n">i</span><span class="p">::</span><span class="nb">text</span> <span class="o">||</span> <span class="s1">&#39; integer&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;);&#39;</span>
+	<span class="k">FROM</span> <span class="n">generate_series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">134</span><span class="p">)</span> <span class="k">As</span> <span class="n">i</span><span class="p">;</span>
+<span class="k">DECLARE</span> <span class="n">podZS</span> <span class="nb">text</span> <span class="p">:</span><span class="o">=</span> <span class="s1">&#39;CREATE TABLE financial_report_is_pod(id serial PRIMARY KEY, id_financial_report varchar(10),&#39;</span>
+	<span class="o">||</span> <span class="n">string_agg</span><span class="p">(</span><span class="s1">&#39;V&#39;</span> <span class="o">||</span> <span class="n">i</span><span class="p">::</span><span class="nb">text</span> <span class="o">||</span> <span class="s1">&#39; integer&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="s1">&#39;);&#39;</span>
+	<span class="k">FROM</span> <span class="n">generate_series</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">122</span><span class="p">)</span> <span class="k">As</span> <span class="n">i</span><span class="p">;</span>
+
+
+<span class="k">BEGIN</span>
+  <span class="k">EXECUTE</span> <span class="n">mujAkt</span><span class="p">;</span>
+	<span class="k">EXECUTE</span> <span class="n">mujPas</span><span class="p">;</span>
+	<span class="k">EXECUTE</span> <span class="n">mujZS</span><span class="p">;</span>
+	
+	<span class="k">EXECUTE</span> <span class="n">podAkt</span><span class="p">;</span>
+	<span class="k">EXECUTE</span> <span class="n">podPas</span><span class="p">;</span>
+	<span class="k">EXECUTE</span> <span class="n">podZS</span><span class="p">;</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="err">$$</span> <span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>After running the script, it&rsquo;s time to prepare code that will fill the tables with data.</p>
+<h1 id="communication-with-api">Communication with API</h1>
+<p>First we create functions, which will communicate with the API. A natural way to communicate with API would be to use a different types of HTTP request methods. However, this is not the case. If you try <code>httr::GET</code> it will fail. However, we can use function <code>readLines</code> from the base package. This will return the content of the website which we can then transform into a nice object using <code>rjson::fromJSON</code>.</p>
+<p>We can create a nice little function for this, as we will use this a lot.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">getObjectFromURL</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">readLines</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">warn</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s">&#34;UTF-8&#34;</span><span class="p">)</span> <span class="o">%&gt;%</span> 
+    <span class="n">rjson</span><span class="o">::</span><span class="nf">fromJSON</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>For creating URLs with queries, We could use <code>paste</code> for each endpoint with all the parameters, however, this solution would be error-prone and could get messy soon. For this, we can also use a small utility function, which will prepare the URL.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">createUrl</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">baseUrl</span> <span class="o">=</span> <span class="s">&#34;http://www.registeruz.sk/cruz-public/api&#34;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">params</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="kc">...</span><span class="p">)</span>
+  <span class="n">params</span> <span class="o">&lt;-</span> <span class="nf">paste</span><span class="p">(</span><span class="nf">names</span><span class="p">(</span><span class="n">params</span><span class="p">),</span> <span class="n">params</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&#34;=&#34;</span><span class="p">)</span>
+  <span class="nf">if </span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">paste0</span><span class="p">(</span><span class="n">baseUrl</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">)</span>
+  <span class="p">}</span> <span class="n">else</span> <span class="p">{</span>
+    <span class="nf">paste0</span><span class="p">(</span><span class="n">baseUrl</span><span class="p">,</span> <span class="n">endpoint</span><span class="p">,</span> <span class="s">&#34;?&#34;</span><span class="p">,</span> <span class="nf">paste0</span><span class="p">(</span><span class="nf">unlist</span><span class="p">(</span><span class="n">params</span><span class="p">),</span> <span class="n">collapse</span> <span class="o">=</span> <span class="s">&#34;&amp;&#34;</span><span class="p">))</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>And this last function, which we will use for downloading data is a little bit hacky. While batch downloading, I have noticed, that querying some URLs will throw an error, but if we query the same URL next time, it will return the data. So this function will try to query URL a few times and it will return <code>NULL</code> only if it fails each time.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">tryUntilSuccess</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">numberOfTries</span> <span class="o">=</span> <span class="m">20</span><span class="p">,</span> <span class="n">fun</span> <span class="o">=</span> <span class="n">getObjectFromURL</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">if </span><span class="p">(</span><span class="n">numberOfTries</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">warning</span><span class="p">(</span><span class="s">&#34;Unable to read from: &#34;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="kc">NULL</span>
+  <span class="p">}</span> <span class="n">else</span> <span class="p">{</span>
+    <span class="n">res</span> <span class="o">&lt;-</span> <span class="nf">tryCatch</span><span class="p">(</span>
+      <span class="nf">fun</span><span class="p">(</span><span class="n">url</span><span class="p">),</span>
+      <span class="n">error</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span><span class="nf">tryUntilSuccess</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">numberOfTries</span> <span class="o">-</span> <span class="m">1</span><span class="p">,</span> <span class="n">fun</span><span class="p">)}</span>
+    <span class="p">)</span>
+    <span class="n">res</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>After we put all this stuff together, we can create nice small functions for communicating with endpoints.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">getChangedFinancialReports</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">from</span> <span class="o">=</span> <span class="s">&#34;2019-01-01&#34;</span><span class="p">,</span> <span class="n">maxNumber</span> <span class="o">=</span> <span class="m">10000</span><span class="p">,</span> <span class="n">afterId</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">createUrl</span><span class="p">(</span><span class="s">&#34;/uctovne-vykazy&#34;</span><span class="p">,</span> <span class="s">&#34;zmenene-od&#34;</span> <span class="o">=</span> <span class="n">from</span><span class="p">,</span> <span class="s">&#34;max-zaznamov&#34;</span> <span class="o">=</span> <span class="n">maxNumber</span><span class="p">,</span> <span class="s">&#34;pokracovat-za-id&#34;</span> <span class="o">=</span> <span class="n">afterId</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">tryUntilSuccess</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="n">getFinancialReportDetails</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">createUrl</span><span class="p">(</span><span class="s">&#34;/uctovny-vykaz&#34;</span><span class="p">,</span> <span class="n">id</span> <span class="o">=</span> <span class="n">id</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">tryUntilSuccess</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="database-communication">Database communication</h1>
+<p>Next, we need to prepare functions, which will save downloaded data to the database. We pretty much only need a database connection function, which will be appending data into the database. The database connection is defined as a global variable here as I have wanted to create something similar to a singleton pattern. I am not fully satisfied with this solution, as it misses encapsulation, so I will probably look at how to approach this stuff in the future.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">DB_CONNECTION</span> <span class="o">&lt;-</span> <span class="kc">NULL</span>
+
+
+<span class="n">getDBConnection</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">db</span> <span class="o">&lt;-</span> <span class="s">&#34;postgres&#34;</span>
+  <span class="n">host_db</span> <span class="o">&lt;-</span> <span class="s">&#34;127.0.0.1&#34;</span>
+  <span class="n">db_port</span> <span class="o">&lt;-</span> <span class="s">&#34;5432&#34;</span>
+  <span class="n">db_user</span> <span class="o">&lt;-</span> <span class="s">&#34;postgres&#34;</span>
+  <span class="n">db_password</span> <span class="o">&lt;-</span> <span class="s">&#34;admin&#34;</span>
+  <span class="nf">if </span><span class="p">(</span><span class="nf">is.null</span><span class="p">(</span><span class="n">DB_CONNECTION</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nf">message</span><span class="p">(</span><span class="s">&#34;Opening new DB connection&#34;</span><span class="p">)</span>
+    <span class="n">DB_CONNECTION</span> <span class="o">&lt;&lt;-</span>
+      <span class="n">DBI</span><span class="o">::</span><span class="nf">dbConnect</span><span class="p">(</span>
+        <span class="n">RPostgres</span><span class="o">::</span><span class="nf">Postgres</span><span class="p">(),</span>
+        <span class="n">dbname</span> <span class="o">=</span> <span class="n">db</span><span class="p">,</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="n">host_db</span><span class="p">,</span>
+        <span class="n">port</span> <span class="o">=</span> <span class="n">db_port</span><span class="p">,</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">db_user</span><span class="p">,</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">db_password</span>
+      <span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="n">DB_CONNECTION</span>
+<span class="p">}</span>
+
+
+<span class="n">appendIfMissing</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tableName</span><span class="p">,</span> <span class="n">con</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">whereStatement</span> <span class="o">&lt;-</span> <span class="nf">lapply</span><span class="p">(</span><span class="nf">names</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nf">function</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">glue</span><span class="o">::</span><span class="nf">glue_sql</span><span class="p">(</span><span class="s">&#34;{`name`} NOT IN ({x[[name]]*})&#34;</span><span class="p">,</span> <span class="n">.con</span> <span class="o">=</span> <span class="n">con</span><span class="p">)</span>
+  <span class="p">})</span> <span class="o">%&gt;%</span> <span class="nf">unlist</span><span class="p">()</span> <span class="o">%&gt;%</span> <span class="n">glue</span><span class="o">::</span><span class="nf">glue_collapse</span><span class="p">(</span><span class="n">sep</span> <span class="o">=</span> <span class="s">&#34; OR &#34;</span><span class="p">)</span>
+
+  <span class="n">res</span> <span class="o">&lt;-</span> <span class="n">glue</span><span class="o">::</span><span class="nf">glue_sql</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="s">&#34;SELECT * FROM {`tableName`}&#34;</span><span class="p">),</span> <span class="n">.con</span> <span class="o">=</span> <span class="n">con</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="n">RPostgres</span><span class="o">::</span><span class="nf">dbGetQuery</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="n">.)</span>
+  <span class="nf">names</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">tolower</span><span class="p">(</span><span class="nf">names</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+  <span class="n">toAppend</span> <span class="o">&lt;-</span> <span class="n">dplyr</span><span class="o">::</span><span class="nf">anti_join</span><span class="p">(</span><span class="nf">toCharDF</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nf">toCharDF</span><span class="p">(</span><span class="n">res</span><span class="nf">[names</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="n">]</span><span class="p">),</span> <span class="n">by</span> <span class="o">=</span> <span class="nf">names</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+  <span class="nf">if </span><span class="p">(</span><span class="nf">nrow</span><span class="p">(</span><span class="n">toAppend</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">nrOfAppendedRows</span> <span class="o">&lt;-</span> <span class="n">RPostgres</span><span class="o">::</span><span class="nf">dbAppendTable</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="n">tableName</span><span class="p">,</span> <span class="n">toAppend</span><span class="p">,</span> <span class="n">row.names</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span>
+    <span class="n">usethis</span><span class="o">::</span><span class="nf">ui_info</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="s">&#34;Appended missing values to table:&#34;</span><span class="p">,</span> <span class="n">nrOfAppendedRows</span><span class="p">))</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Except for these functions, that will make our communication with DB easier, we will also need to prepare data to be appended into the database. We are going to split each financial report into multiple different parts. The base part of the financial report, which specifies where the data comes from and which template was used. Then we have the title page of the report, which contains information about the financial unit. The final parts that we will extract are assets, liabilities and equity, and income statement, of the financial entity.</p>
+<p>For these things, we will use the following functions:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">getBaseFinReport</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">finReport</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">finReport[</span><span class="o">!</span><span class="nf">names</span><span class="p">(</span><span class="n">finReport</span><span class="p">)</span> <span class="o">%in%</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#34;prilohy&#34;</span><span class="p">,</span> <span class="s">&#34;obsah&#34;</span><span class="p">,</span> <span class="s">&#34;idUctovnejZavierky&#34;</span><span class="p">,</span> <span class="s">&#34;id&#34;</span><span class="p">)</span><span class="n">]</span> <span class="o">%&gt;%</span>
+    <span class="nf">as.data.frame</span><span class="p">(</span><span class="n">stringsAsFactors</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span> <span class="o">%&gt;%</span>
+    <span class="nf">cbind</span><span class="p">(</span><span class="n">id_financial_report</span> <span class="o">=</span> <span class="n">finReport</span><span class="o">$</span><span class="n">id</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">getTitleFinReport</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">finReport</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">.normalizeDate</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nf">is.null</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="nf">is.na</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="nf">addDayToDate</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">else</span> <span class="n">x</span>
+  <span class="p">}</span>
+
+  <span class="nf">ncol</span><span class="p">(</span><span class="nf">getAktivaFinReport</span><span class="p">(</span><span class="n">finReport</span><span class="p">))</span>
+
+  <span class="n">title</span> <span class="o">&lt;-</span> <span class="n">finReport</span><span class="o">$</span><span class="n">obsah</span><span class="o">$</span><span class="n">titulnaStrana</span>
+  <span class="n">title</span><span class="o">$</span><span class="n">adresa</span> <span class="o">&lt;-</span> <span class="nf">paste</span><span class="p">(</span><span class="n">title</span><span class="o">$</span><span class="n">adresa</span><span class="p">,</span> <span class="n">collapse</span> <span class="o">=</span> <span class="s">&#34; &#34;</span><span class="p">)</span>
+  <span class="nf">if </span><span class="p">(</span><span class="nf">ncol</span><span class="p">(</span><span class="nf">getAktivaFinReport</span><span class="p">(</span><span class="n">finReport</span><span class="p">))</span> <span class="o">==</span> <span class="m">47</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">title</span><span class="o">$</span><span class="n">type</span> <span class="o">&lt;-</span> <span class="s">&#34;MUJ&#34;</span>
+  <span class="p">}</span> <span class="n">else</span> <span class="nf">if </span><span class="p">(</span><span class="nf">ncol</span><span class="p">(</span><span class="nf">getAktivaFinReport</span><span class="p">(</span><span class="n">finReport</span><span class="p">))</span> <span class="o">==</span> <span class="m">313</span><span class="p">){</span>
+    <span class="n">title</span><span class="o">$</span><span class="n">type</span> <span class="o">&lt;-</span> <span class="s">&#34;POD&#34;</span>
+  <span class="p">}</span>
+
+  <span class="n">title</span> <span class="o">&lt;-</span> <span class="n">title</span> <span class="o">%&gt;%</span> <span class="nf">as.data.frame</span><span class="p">(</span><span class="n">stringsAsFactors</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+  <span class="n">title</span><span class="o">$</span><span class="n">obdobieOd</span> <span class="o">&lt;-</span> <span class="nf">.normalizeDate</span><span class="p">(</span><span class="n">title</span><span class="o">$</span><span class="n">obdobieOd</span><span class="p">)</span>
+  <span class="n">title</span><span class="o">$</span><span class="n">obdobieDo</span> <span class="o">&lt;-</span> <span class="nf">.normalizeDate</span><span class="p">(</span><span class="n">title</span><span class="o">$</span><span class="n">obdobieDo</span><span class="p">)</span>
+  <span class="n">title</span><span class="o">$</span><span class="n">predchadzajuceObdobieDo</span> <span class="o">&lt;-</span> <span class="nf">.normalizeDate</span><span class="p">(</span><span class="n">title</span><span class="o">$</span><span class="n">predchadzajuceObdobieDo</span><span class="p">)</span>
+  <span class="n">title</span><span class="o">$</span><span class="n">predchadzajuceObdobieOd</span> <span class="o">&lt;-</span> <span class="nf">.normalizeDate</span><span class="p">(</span><span class="n">title</span><span class="o">$</span><span class="n">predchadzajuceObdobieOd</span><span class="p">)</span>
+
+  <span class="nf">cbind</span><span class="p">(</span><span class="n">id_financial_report</span> <span class="o">=</span> <span class="n">finReport</span><span class="o">$</span><span class="n">id</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">getNumericReportData</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">finReport</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">finReport</span><span class="o">$</span><span class="n">obsah</span><span class="o">$</span><span class="n">tabulky[[position]]</span><span class="o">$</span><span class="n">data</span> <span class="o">%&gt;%</span>
+    <span class="nf">as.numeric</span><span class="p">()</span> <span class="o">%&gt;%</span>
+    <span class="nf">t</span><span class="p">()</span> <span class="o">%&gt;%</span>
+    <span class="nf">as.data.frame</span><span class="p">()</span> <span class="o">%&gt;%</span>
+    <span class="nf">cbind</span><span class="p">(</span><span class="n">id_financial_report</span> <span class="o">=</span> <span class="n">finReport</span><span class="o">$</span><span class="n">id</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">getAssetsFinReport</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">finReport</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">getNumericReportData</span><span class="p">(</span><span class="n">finReport</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">getLAEFinReport</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">finReport</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">getNumericReportData</span><span class="p">(</span><span class="n">finReport</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">getISFinReport</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">finReport</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">getNumericReportData</span><span class="p">(</span><span class="n">finReport</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">addDayToDate</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">day</span> <span class="o">=</span> <span class="s">&#34;01&#34;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">paste</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&#34;-&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">toCharDF</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">x[]</span> <span class="o">&lt;-</span> <span class="nf">lapply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">as.character</span><span class="p">)</span>
+  <span class="n">x</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>You might have noticed, that function <code>getTitleFinReport</code> also adds <code>type</code> column to the data.frame. Financial entities can do their bookkeeping in two different styles. Double-entry bookkeeping and simple bookkeeping. As we want to download both styles, we need to differentiate between them and save each of them to their respective database tables. As there is no field in the response, which would tell us, which type of bookkeeping is used, we derive it from the number of fields in the assets part of the JSON.</p>
+<p>And this is pretty much it. We only need to combine these functions and we are ready to save the financial report into the database with the following function.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">appendFinancialReport</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">finReport</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">.appendType</span> <span class="o">&lt;-</span>
+    <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">finReportTitle</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nf">if </span><span class="p">(</span><span class="n">finReportTitle</span><span class="o">$</span><span class="n">type</span> <span class="o">==</span> <span class="s">&#34;MUJ&#34;</span><span class="p">)</span>
+        <span class="nf">paste0</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s">&#34;_muj&#34;</span><span class="p">)</span>
+      <span class="n">else</span>
+        <span class="nf">paste0</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s">&#34;_pod&#34;</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="nf">message</span><span class="p">(</span><span class="s">&#34;Process report:&#34;</span><span class="p">,</span> <span class="n">finReport</span><span class="o">$</span><span class="n">id</span><span class="p">)</span>
+
+  <span class="n">con</span> <span class="o">&lt;-</span> <span class="nf">getDBConnection</span><span class="p">()</span>
+  <span class="n">finReportBase</span> <span class="o">&lt;-</span> <span class="nf">getBaseFinReport</span><span class="p">(</span><span class="n">finReport</span><span class="p">)</span>
+  <span class="n">finReportTitle</span> <span class="o">&lt;-</span> <span class="nf">getTitleFinReport</span><span class="p">(</span><span class="n">finReport</span><span class="p">)</span>
+  <span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nf">is.null</span><span class="p">(</span><span class="n">finReportTitle</span><span class="o">$</span><span class="n">type</span><span class="p">))</span> <span class="p">{</span>
+
+    <span class="n">finReportsForFinStatement</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span>
+      <span class="n">id_financial_report</span> <span class="o">=</span> <span class="n">finReport</span><span class="o">$</span><span class="n">id</span><span class="p">,</span>
+      <span class="n">id_financial_statement</span> <span class="o">=</span> <span class="n">finReport</span><span class="o">$</span><span class="n">idUctovnejZavierky</span><span class="p">,</span>
+      <span class="n">stringsAsFactors</span> <span class="o">=</span> <span class="kc">FALSE</span>
+    <span class="p">)</span>
+  
+    <span class="nf">message</span><span class="p">(</span><span class="s">&#34;Add report with id:&#34;</span><span class="p">,</span> <span class="n">finReport</span><span class="o">$</span><span class="n">id</span><span class="p">)</span>
+      <span class="nf">tryCatch</span><span class="p">(</span>
+        <span class="p">{</span>
+          <span class="n">RPostgres</span><span class="o">::</span><span class="nf">dbBegin</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
+          <span class="nf">appendIfMissing</span><span class="p">(</span><span class="n">finReportBase</span><span class="p">,</span> <span class="s">&#34;financial_report_base&#34;</span><span class="p">,</span> <span class="n">con</span><span class="p">)</span>
+          <span class="nf">appendIfMissing</span><span class="p">(</span><span class="n">finReportTitle</span><span class="p">,</span> <span class="s">&#34;financial_report_title&#34;</span><span class="p">,</span> <span class="n">con</span><span class="p">)</span>
+          <span class="nf">appendIfMissing</span><span class="p">(</span><span class="n">finReportsForFinStatement</span><span class="p">,</span> <span class="s">&#34;financial_report_for_financial_statement&#34;</span><span class="p">,</span> <span class="n">con</span><span class="p">)</span>
+          <span class="nf">appendIfMissing</span><span class="p">(</span><span class="nf">getAssetsFinReport</span><span class="p">(</span><span class="n">finReport</span><span class="p">),</span> <span class="nf">.appendType</span><span class="p">(</span><span class="s">&#34;financial_report_assets&#34;</span><span class="p">,</span> <span class="n">finReportTitle</span><span class="p">),</span> <span class="n">con</span><span class="p">)</span>
+          <span class="nf">appendIfMissing</span><span class="p">(</span><span class="nf">getLAEFinReport</span><span class="p">(</span><span class="n">finReport</span><span class="p">),</span> <span class="nf">.appendType</span><span class="p">(</span><span class="s">&#34;financial_report_lae&#34;</span><span class="p">,</span> <span class="n">finReportTitle</span><span class="p">),</span> <span class="n">con</span><span class="p">)</span>
+          <span class="nf">appendIfMissing</span><span class="p">(</span><span class="nf">getISFinReport</span><span class="p">(</span><span class="n">finReport</span><span class="p">),</span> <span class="nf">.appendType</span><span class="p">(</span><span class="s">&#34;financial_report_is&#34;</span><span class="p">,</span> <span class="n">finReportTitle</span><span class="p">),</span> <span class="n">con</span><span class="p">)</span>
+          <span class="n">RPostgres</span><span class="o">::</span><span class="nf">dbCommit</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
+        <span class="p">},</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span><span class="n">RPostgres</span><span class="o">::</span><span class="nf">dbRollback</span><span class="p">(</span><span class="n">con</span><span class="p">)}</span>
+      <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>As you can see, we have appending to the database wrapped in the <code>tryCatch</code> function. We do this, to keep transaction atomic. This means, that we will commit all the data into the database or nothing will occur. So in case of the error, <code>dbRollback</code> is called and the transaction is reverted.</p>
+<h1 id="putting-it-all-together">Putting it all together</h1>
+<p>Now it is time to combine everything we have prepared and start scraping data. Thanks to our modular design, this should be pretty easy. All we have to do now is to get all the IDs of financial reports, that have changed since a certain date and then download each of them and save it into the database.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="nf">getAllChangedFinancialReports</span><span class="p">(</span><span class="s">&#34;2020-05-01&#34;</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="n">.$result.id</span> <span class="o">%&gt;%</span>
+  <span class="nf">lapply</span><span class="p">(</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">getFinancialReportDetails</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">%&gt;%</span>
+      <span class="nf">appendFinancialReport</span><span class="p">()</span>
+  <span class="p">})</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>And this is it, all it remains is to wait until all the financial reports are downloaded. Afterwards we can do further analysis of the data, but this might come in the future blog post :). Complete code for this package can be found in <a href="https://github.com/pbelai/RegisterOfFinancialStatements" target="_blank" rel="noopener noreffer">this GitHub repository</a>.</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-06-08&nbsp;<a class="git-hash" href="https://github.com/dillonzq/LoveIt/commit/24f05cac7f33b9303099a23876b401bfbfa0b203" target="_blank" title="commit by Peter Belai(peter.belai@gmail.com) 24f05cac7f33b9303099a23876b401bfbfa0b203: publish preparation">
+                                    <i class="fas fa-hashtag fa-fw"></i>24f05ca</a></span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" data-title="Scraping financial statements of Slovak financial entities" data-hashtags="R,Data-scraping,PostgreSQL"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" data-hashtag="R"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/"><i class="fab fa-linkedin fa-fw"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/" data-title="Scraping financial statements of Slovak financial entities"><i class="fab fa-hacker-news fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/r/">R</a>,&nbsp;<a href="/tags/data-scraping/">Data-scraping</a>,&nbsp;<a href="/tags/postgresql/">PostgreSQL</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.71.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Peter Belai</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
