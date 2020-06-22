@@ -19,7 +19,7 @@ hiddenFromSearch: no
 featuredImage: ''
 featuredImagePreview: ''
 toc:
-  enable: yes
+  enable: no
 math:
   enable: no
 lightgallery: no
