@@ -3,7 +3,7 @@ defaultContentLanguage = "en"
 theme = "LoveIt"
 title = "Peter Belai - R and data blog"
 enableRobotsTXT = true
-enableGitInfo = true
+enableGitInfo = false
 enableEmoji = true
 
 [languages]
@@ -62,7 +62,7 @@ enableEmoji = true
       # site description
       description = "Peter Belai blog"
       # site keywords
-      keywords = ["Theme", "Hugo"]
+      keywords = ["Data", "R", "Peter", "Belai", "Blog"]
       # App icon config
       [languages.en.params.app]
         # optional site title override for the app when added to an iOS home screen or Android launcher
@@ -126,8 +126,8 @@ enableEmoji = true
           paginate = 6
       # Social config in home page
       [languages.en.params.social]
-        GitHub = "https://github.com/pbelai/"
-        Linkedin = "https://www.linkedin.com/in/peter-belai-83157b9b/"
+        GitHub = "pbelai/"
+        Linkedin = "peter-belai-83157b9b/"
         Email = "peter.belai@gmail.com"
         RSS = true
 
@@ -265,7 +265,7 @@ enableEmoji = true
       fullscreen = true
     # Social share links in post page
     [params.page.share]
-      enable = true
+      enable = false
       Twitter = true
       Facebook = true
       Linkedin = true

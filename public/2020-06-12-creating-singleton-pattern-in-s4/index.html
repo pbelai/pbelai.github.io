@@ -12,7 +12,7 @@ As someone, who used to work with Java and Scala before transitioning to R, sing
 <meta property="og:url" content="/2020-06-12-creating-singleton-pattern-in-s4/" />
 <meta property="og:image" content="/logo.png"/>
 <meta property="article:published_time" content="2020-06-12T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-06-16T20:42:45+02:00" />
+<meta property="article:modified_time" content="2020-06-12T22:01:05+02:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/logo.png"/>
 
@@ -37,7 +37,7 @@ As someone, who used to work with Java and Scala before transitioning to R, sing
                             "width":  3200 ,
                             "height":  2048 
                         }],"genre": "posts","keywords": "R, OOP, S4, Design patterns","wordcount":  443 ,
-        "url": "\/2020-06-12-creating-singleton-pattern-in-s4\/","datePublished": "2020-06-12T00:00:00+00:00","dateModified": "2020-06-16T20:42:45+02:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+        "url": "\/2020-06-12-creating-singleton-pattern-in-s4\/","datePublished": "2020-06-12T00:00:00+00:00","dateModified": "2020-06-12T22:01:05+02:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
             "@type": "Organization",
             "name": "xxxx","logo": {
                     "@type": "ImageObject",
@@ -86,20 +86,11 @@ As someone, who used to work with Java and Scala before transitioning to R, sing
     <div id="search-dropdown-mobile"></div>
 </div>
 <main class="main">
-                <div class="container"><div class="toc" id="toc-auto">
-            <h2 class="toc-title">Contents</h2>
-            <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animated flipInX">Creating singleton pattern in S4</h1><div class="post-meta">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Creating singleton pattern in S4</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Peter Belai</a></span>&nbsp;<span class="post-category">included in <a href="/categories/design-patterns/"><i class="far fa-folder fa-fw"></i>Design patterns</a></span></div>
             <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-06-12">2020-06-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;443 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
-        </div><div class="details toc" id="toc-static"  kept="">
-                <div class="details-summary toc-title">
-                    <span>Contents</span>
-                    <span><i class="details-icon fas fa-angle-right"></i></span>
-                </div>
-                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
-            </div><div class="content" id="content"><p>In my previous post, we have been creating a package with a connection to the database. However, this connection was exposed as a global object, which could then be freely accessed by anyone. I didn&rsquo;t like this approach, so I have decided to try to find a way how to encapsulate it and hide this object from the user of the package.</p>
+        </div><div class="content" id="content"><p>In my previous post, we have been creating a package with a connection to the database. However, this connection was exposed as a global object, which could then be freely accessed by anyone. I didn&rsquo;t like this approach, so I have decided to try to find a way how to encapsulate it and hide this object from the user of the package.</p>
 <p>As someone, who used to work with Java and Scala before transitioning to R, singleton immediately came into my mind. However I have not worked with object-oriented programming in R. So I have studied a little bit about all the different class systems in R. From all the possible class systems, reference classes are the most similar to the Java classes as the objects are for example mutable. However, this mutability does not go hand in hand with the more functional design in R, so I have decided to create something similar to a singleton in the S4 system.</p>
 <h1 id="singleton">Singleton</h1>
 <p>First of all, we need to create new S4 class.</p>
@@ -172,8 +163,7 @@ As someone, who used to work with Java and Scala before transitioning to R, sing
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2020-06-16&nbsp;<a class="git-hash" href="https://github.com/dillonzq/LoveIt/commit/9ed4af9ead04292d7df4d00f13cdb2d9359197fe" target="_blank" title="commit by Peter Belai(peter.belai@gmail.com) 9ed4af9ead04292d7df4d00f13cdb2d9359197fe: new article">
-                                    <i class="fas fa-hashtag fa-fw"></i>9ed4af9</a></span>
+                <span>Updated on 2020-06-12</span>
             </div>
             <div class="post-info-license"></div>
         </div>
@@ -182,7 +172,7 @@ As someone, who used to work with Java and Scala before transitioning to R, sing
                             <a class="link-to-markdown" href="/2020-06-12-creating-singleton-pattern-in-s4/index.md" target="_blank">Read Markdown</a>
                         </span></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="/2020-06-12-creating-singleton-pattern-in-s4/" data-title="Creating singleton pattern in S4" data-hashtags="R,OOP,S4,Design patterns"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="/2020-06-12-creating-singleton-pattern-in-s4/" data-hashtag="R"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="/2020-06-12-creating-singleton-pattern-in-s4/"><i class="fab fa-linkedin fa-fw"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="/2020-06-12-creating-singleton-pattern-in-s4/" data-title="Creating singleton pattern in S4"><i class="fab fa-hacker-news fa-fw"></i></a></span>
+                <span></span>
             </div>
         </div>
     </div>
@@ -208,7 +198,7 @@ As someone, who used to work with Java and Scala before transitioning to R, sing
             </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
                 <i class="fas fa-comment fa-fw"></i>
             </a>
-        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.4.0/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
             window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
             gtag('config', 'UA-168161457-1 ', { 'anonymize_ip': true });
         </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-168161457-1%20" async></script></body>
