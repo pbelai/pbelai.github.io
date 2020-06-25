@@ -1,8 +1,8 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Documentation - Category - Peter Belai - R and data blog</title>
-        <link>/categories/documentation/</link>
+        <link>https://example.com/categories/documentation/</link>
         <description>Documentation - Category - Peter Belai - R and data blog</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>peter.belai@gmail.com (Peter Belai)</managingEditor>
-            <webMaster>peter.belai@gmail.com (Peter Belai)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><atom:link href="/categories/documentation/" rel="self" type="application/rss+xml" /></channel>
+            <webMaster>peter.belai@gmail.com (Peter Belai)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><atom:link href="https://example.com/categories/documentation/" rel="self" type="application/rss+xml" /></channel>
 </rss>

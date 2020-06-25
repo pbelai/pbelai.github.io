@@ -2,19 +2,21 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>/categories/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
-            <loc>/2020-06-12-creating-singleton-pattern-in-s4/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
-            <loc>/tags/design-patterns/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
-            <loc>/categories/design-patterns/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
-            <loc>/tags/oop/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
-            <loc>/posts/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
-            <loc>/tags/r/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
-            <loc>/tags/s4/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
-            <loc>/tags/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
-            <loc>/tags/data-scraping/</loc><lastmod>2020-06-07T13:25:44&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
-            <loc>/categories/data-scraping/</loc><lastmod>2020-06-07T13:25:44&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
-            <loc>/tags/postgresql/</loc><lastmod>2020-06-07T13:25:44&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
-            <loc>/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/</loc><lastmod>2020-06-07T13:25:44&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
-            <loc>/about/</loc><lastmod>2020-06-02T11:04:49&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
-            <loc>/</loc><lastmod>2020-06-02T11:04:49&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
-            <loc>/categories/documentation/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url></urlset>
+            <loc>https://example.com/categories/</loc><lastmod>2020-06-22T18:58:43&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://example.com/tags/data-scraping/</loc><lastmod>2020-06-22T18:58:43&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://example.com/categories/data-scraping/</loc><lastmod>2020-06-22T18:58:43&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://example.com/posts/</loc><lastmod>2020-06-22T18:58:43&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://example.com/tags/r/</loc><lastmod>2020-06-22T18:58:43&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://example.com/2020-06-22-scraping-data-from-website-with-infinite-scrolling/</loc><lastmod>2020-06-22T18:58:43&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://example.com/tags/selenium/</loc><lastmod>2020-06-22T18:58:43&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://example.com/tags/</loc><lastmod>2020-06-22T18:58:43&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>1</priority></url><url>
+            <loc>https://example.com/2020-06-12-creating-singleton-pattern-in-s4/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://example.com/tags/design-patterns/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://example.com/categories/design-patterns/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://example.com/tags/oop/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://example.com/tags/s4/</loc><lastmod>2020-06-12T22:01:05&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url><url>
+            <loc>https://example.com/tags/postgresql/</loc><lastmod>2020-06-07T13:25:44&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
+            <loc>https://example.com/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/</loc><lastmod>2020-06-07T13:25:44&#43;02:00</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url><url>
+            <loc>https://example.com/about/</loc><lastmod>2020-06-02T11:04:49&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
+            <loc>https://example.com/</loc><lastmod>2020-06-02T11:04:49&#43;08:00</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
+            <loc>https://example.com/categories/documentation/</loc><changefreq>weekly</changefreq><priority>0.5</priority></url></urlset>

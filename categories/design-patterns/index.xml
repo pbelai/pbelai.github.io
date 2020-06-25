@@ -1,15 +1,15 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Design patterns - Category - Peter Belai - R and data blog</title>
-        <link>/categories/design-patterns/</link>
+        <link>https://example.com/categories/design-patterns/</link>
         <description>Design patterns - Category - Peter Belai - R and data blog</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>peter.belai@gmail.com (Peter Belai)</managingEditor>
-            <webMaster>peter.belai@gmail.com (Peter Belai)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 12 Jun 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="/categories/design-patterns/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>peter.belai@gmail.com (Peter Belai)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Fri, 12 Jun 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://example.com/categories/design-patterns/" rel="self" type="application/rss+xml" /><item>
     <title>Creating singleton pattern in S4</title>
-    <link>/2020-06-12-creating-singleton-pattern-in-s4/</link>
+    <link>https://example.com/2020-06-12-creating-singleton-pattern-in-s4/</link>
     <pubDate>Fri, 12 Jun 2020 00:00:00 &#43;0000</pubDate>
     <author>Author</author>
-    <guid>/2020-06-12-creating-singleton-pattern-in-s4/</guid>
+    <guid>https://example.com/2020-06-12-creating-singleton-pattern-in-s4/</guid>
     <description><![CDATA[In my previous post, we have been creating a package with a connection to the database. However, this connection was exposed as a global object, which could then be freely accessed by anyone. I didn&rsquo;t like this approach, so I have decided to try to find a way how to encapsulate it and hide this object from the user of the package.
 As someone, who used to work with Java and Scala before transitioning to R, singleton immediately came into my mind.]]></description>
 </item></channel>

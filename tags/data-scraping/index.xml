@@ -1,15 +1,22 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>Data-scraping - Tag - Peter Belai - R and data blog</title>
-        <link>/tags/data-scraping/</link>
+        <link>https://example.com/tags/data-scraping/</link>
         <description>Data-scraping - Tag - Peter Belai - R and data blog</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>peter.belai@gmail.com (Peter Belai)</managingEditor>
-            <webMaster>peter.belai@gmail.com (Peter Belai)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Sun, 07 Jun 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="/tags/data-scraping/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>peter.belai@gmail.com (Peter Belai)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 22 Jun 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://example.com/tags/data-scraping/" rel="self" type="application/rss+xml" /><item>
+    <title>Scraping data from website with infinite scrolling</title>
+    <link>https://example.com/2020-06-22-scraping-data-from-website-with-infinite-scrolling/</link>
+    <pubDate>Mon, 22 Jun 2020 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://example.com/2020-06-22-scraping-data-from-website-with-infinite-scrolling/</guid>
+    <description><![CDATA[R is a popular language for scraping websites and has plenty of packages for scraping static websites. However, dynamically generated websites are growing in popularity. These are harder to scrape, as the content is generated after we load the website or do some events on the website. Luckily, R has a solution even for this. Package RSelenium which enables us to connect to the Selenium server. You can learn more about this package from its vignette.]]></description>
+</item><item>
     <title>Scraping financial statements of Slovak financial entities</title>
-    <link>/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/</link>
+    <link>https://example.com/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/</link>
     <pubDate>Sun, 07 Jun 2020 00:00:00 &#43;0000</pubDate>
     <author>Author</author>
-    <guid>/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/</guid>
+    <guid>https://example.com/2020-06-07-scraping-financial-statements-of-slovak-financial-entities/</guid>
     <description><![CDATA[It is always interesting to go back to your older projects. You can spot, how is your coding style evolving, and how you, as a programmer, are improving. Recently, I had to go through the code of one of my first projects in R and boy, was it a mess. It was supposed to download Financial Statements of all the businesses in Slovakia for a certain year. It worked, barely. But trying to understand the code was a pain.]]></description>
 </item></channel>
 </rss>

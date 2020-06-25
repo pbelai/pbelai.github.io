@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Selenium - Tag - Peter Belai - R and data blog</title>
+        <link>https://example.com/tags/selenium/</link>
+        <description>Selenium - Tag - Peter Belai - R and data blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>peter.belai@gmail.com (Peter Belai)</managingEditor>
+            <webMaster>peter.belai@gmail.com (Peter Belai)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 22 Jun 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://example.com/tags/selenium/" rel="self" type="application/rss+xml" /><item>
+    <title>Scraping data from website with infinite scrolling</title>
+    <link>https://example.com/2020-06-22-scraping-data-from-website-with-infinite-scrolling/</link>
+    <pubDate>Mon, 22 Jun 2020 00:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://example.com/2020-06-22-scraping-data-from-website-with-infinite-scrolling/</guid>
+    <description><![CDATA[R is a popular language for scraping websites and has plenty of packages for scraping static websites. However, dynamically generated websites are growing in popularity. These are harder to scrape, as the content is generated after we load the website or do some events on the website. Luckily, R has a solution even for this. Package RSelenium which enables us to connect to the Selenium server. You can learn more about this package from its vignette.]]></description>
+</item></channel>
+</rss>
