@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Scraping data from website with infinite scrolling - Peter Belai - R and data blog</title><meta name="Description" content="Peter Belai blog"><meta property="og:title" content="Scraping data from website with infinite scrolling" />
+<meta property="og:description" content="R is a popular language for scraping websites and has plenty of packages for scraping static websites. However, dynamically generated websites are growing in popularity. These are harder to scrape, as the content is generated after we load the website or do some events on the website. Luckily, R has a solution even for this. Package RSelenium which enables us to connect to the Selenium server. You can learn more about this package from its vignette." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/2020-06-22-scraping-data-from-website-with-infinite-scrolling/" />
+<meta property="og:image" content="https://example.com/logo.png"/>
+<meta property="article:published_time" content="2020-06-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-06-22T18:58:43+02:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://example.com/logo.png"/>
+
+<meta name="twitter:title" content="Scraping data from website with infinite scrolling"/>
+<meta name="twitter:description" content="R is a popular language for scraping websites and has plenty of packages for scraping static websites. However, dynamically generated websites are growing in popularity. These are harder to scrape, as the content is generated after we load the website or do some events on the website. Luckily, R has a solution even for this. Package RSelenium which enables us to connect to the Selenium server. You can learn more about this package from its vignette."/>
+<meta name="application-name" content="Peter Belai">
+<meta name="apple-mobile-web-app-title" content="Peter Belai"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://example.com/2020-06-22-scraping-data-from-website-with-infinite-scrolling/" /><link rel="prev" href="https://example.com/2020-06-12-creating-singleton-pattern-in-s4/" /><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Scraping data from website with infinite scrolling",
+        "inLanguage": "en",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/example.com\/2020-06-22-scraping-data-from-website-with-infinite-scrolling\/"
+        },"image": ["https:\/\/example.com\/images\/Apple-Devices-Preview.png"],"genre": "posts","keywords": "Data-scraping, R, Selenium","wordcount":  647 ,
+        "url": "https:\/\/example.com\/2020-06-22-scraping-data-from-website-with-infinite-scrolling\/","datePublished": "2020-06-22T00:00:00+00:00","dateModified": "2020-06-22T18:58:43+02:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/example.com\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "Peter Belai"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="Peter Belai - R and data blog">Peter Belai</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> Posts </a><a class="menu-item" href="/tags/"> Tags </a><a class="menu-item" href="/categories/"> Categories </a><a class="menu-item" href="/about/"> About </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="Peter Belai - R and data blog">Peter Belai</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">Posts</a><a class="menu-item" href="/tags/" title="">Tags</a><a class="menu-item" href="/categories/" title="">Categories</a><a class="menu-item" href="/about/" title="">About</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><article class="page single"><h1 class="single-title animated flipInX">Scraping data from website with infinite scrolling</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Peter Belai</a></span>&nbsp;<span class="post-category">included in <a href="/categories/data-scraping/"><i class="far fa-folder fa-fw"></i>Data-scraping</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-06-22">2020-06-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;647 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
+        </div><div class="content" id="content"><p>R is a popular language for scraping websites and has plenty of packages for scraping static websites. However, dynamically generated websites are growing in popularity. These are harder to scrape, as the content is generated after we load the website or do some events on the website. Luckily, R has a solution even for this. Package <code>RSelenium</code> which enables us to connect to the Selenium server. You can learn more about this package from <a href="https://cran.r-project.org/web/packages/RSelenium/vignettes/basics.html" target="_blank" rel="noopener noreffer">its vignette</a>. In this tutorial, I am going to show you, how to scrape websites with infinite scrolling.</p>
+<h1 id="rselenium-preparation">RSelenium preparation</h1>
+<p>And what better place to scrape, than the one we like to waste time on. That&rsquo;s right we are going to scrape data from youtube. First of all, it is polite to check if the scraping is allowed. We can check <code>robots.txt</code> for youtube to see if youtube is fine with us, scraping it. As there are no restrictions we are fine to continue.</p>
+<p>As a first step, we need to start the Selenium server and browser and open it. We will use headless Firefox, as we do not need to see, what is happening and we want to scrape in the background. We do all this with the following code:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">rD</span> <span class="o">&lt;-</span> <span class="n">RSelenium</span><span class="o">::</span><span class="nf">rsDriver</span><span class="p">(</span><span class="n">port</span> <span class="o">=</span> <span class="m">4485L</span><span class="p">,</span>
+    <span class="n">browser</span> <span class="o">=</span> <span class="s">&#34;firefox&#34;</span><span class="p">,</span>
+    <span class="n">extraCapabilities</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span>
+        <span class="s">&#34;moz:firefoxOptions&#34;</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="s">&#39;--headless&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">remDr</span> <span class="o">&lt;-</span> <span class="n">rD</span><span class="o">$</span><span class="n">client</span>
+<span class="n">remDr</span><span class="o">$</span><span class="nf">open</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Now with our browser ready, we can navigate it to youtube.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">remDr</span><span class="o">$</span><span class="nf">navigate</span><span class="p">(</span><span class="s">&#34;https://www.youtube.com&#34;</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>After this step, we should be ready to scrape video metadata. We will scrape a video title, a video uploader, and a video URL. We can get all the videos on the title page with the following CSS selector: <code>#contents #details #meta</code>. To get the elements with our selenium browser, we just need to use the <code>findElements</code> method.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">videoEls</span>  <span class="o">&lt;-</span> <span class="n">remDr</span><span class="o">$</span><span class="nf">findElements</span><span class="p">(</span><span class="n">using</span> <span class="o">=</span> <span class="s">&#34;css&#34;</span><span class="p">,</span> <span class="s">&#34;#contents #details #meta&#34;</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>And now it&rsquo;s time to return the data in the structured form out of the Selenium browser. We can create a small function, that will return <code>data.frame</code> with the information we need.</p>
+<h1 id="scraping-the-data">Scraping the data</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">getVideoDetails</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">videoEl</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">titleEl</span> <span class="o">&lt;-</span> <span class="n">videoEl</span><span class="o">$</span><span class="nf">findChildElement</span><span class="p">(</span><span class="s">&#34;css&#34;</span><span class="p">,</span><span class="s">&#34;#video-title-link&#34;</span><span class="p">)</span>
+  <span class="n">metadataEl</span> <span class="o">&lt;-</span> <span class="n">videoEl</span><span class="o">$</span><span class="nf">findChildElement</span><span class="p">(</span><span class="s">&#34;css&#34;</span><span class="p">,</span><span class="s">&#34;#metadata&#34;</span><span class="p">)</span>
+  
+  <span class="n">URL</span> <span class="o">&lt;-</span> <span class="n">titleEl</span><span class="o">$</span><span class="nf">getElementAttribute</span><span class="p">(</span><span class="s">&#34;href&#34;</span><span class="p">)</span><span class="n">[[1]]</span>
+  <span class="n">title</span> <span class="o">&lt;-</span> <span class="n">titleEl</span><span class="o">$</span><span class="nf">getElementText</span><span class="p">()</span><span class="n">[[1]]</span>
+  <span class="n">uploaderName</span> <span class="o">&lt;-</span> <span class="n">metadataEl</span><span class="o">$</span><span class="nf">findChildElement</span><span class="p">(</span><span class="s">&#34;css&#34;</span><span class="p">,</span> <span class="s">&#34;#byline-container&#34;</span><span class="p">)</span><span class="o">$</span><span class="nf">getElementText</span><span class="p">()</span><span class="n">[[1]]</span>
+  <span class="nf">data.frame</span><span class="p">(</span><span class="n">URL</span> <span class="o">=</span> <span class="n">URL</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="n">title</span><span class="p">,</span> <span class="n">uploaderName</span> <span class="o">=</span> <span class="n">uploaderName</span><span class="p">,</span> <span class="n">stringsAsFactors</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>As the last step, we will call this function on each element of the videoEls list that we have selected.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">details</span> <span class="o">&lt;-</span> <span class="nf">lapply</span><span class="p">(</span><span class="n">videoEls</span><span class="p">,</span> <span class="n">getVideoDetails</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="n">dplyr</span><span class="o">::</span><span class="nf">bind_rows</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="time-to-scroll">Time to scroll</h1>
+<p>But what about this dynamic content that is generated when we scroll? We will need to select a page element, that we will use for scrolling. The <code>body</code> element is ideal for this, as it wraps the whole web page. After that, we will move to the end of said element. However, as it is infinite scrolling, we will do it just 10 times.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">bodyEl</span> <span class="o">&lt;-</span> <span class="n">remDr</span><span class="o">$</span><span class="nf">findElement</span><span class="p">(</span><span class="s">&#34;css&#34;</span><span class="p">,</span> <span class="s">&#34;body&#34;</span><span class="p">)</span>
+<span class="nf">for </span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">bodyEl</span><span class="o">$</span><span class="nf">sendKeysToElement</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="n">key</span> <span class="o">=</span> <span class="s">&#34;end&#34;</span><span class="p">))</span>
+  <span class="nf">Sys.sleep</span><span class="p">(</span><span class="m">5</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>You might have noticed <code>Sys.sleep</code> function in the loop. It is a good practice to wait a while, between doing requests on the website. Here it is especially important, as we need to wait until our webpage loads the new dynamically generated data. After that, we can once again get all the elements using our CSS selector and scrape the details of videos.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-r" data-lang="r"><span class="n">videoEls</span>  <span class="o">&lt;-</span> <span class="n">remDr</span><span class="o">$</span><span class="nf">findElements</span><span class="p">(</span><span class="n">using</span> <span class="o">=</span> <span class="s">&#34;css&#34;</span><span class="p">,</span> <span class="s">&#34;#contents #details #meta&#34;</span><span class="p">)</span>
+<span class="n">videoDetailsScrolled</span> <span class="o">&lt;-</span> <span class="nf">lapply</span><span class="p">(</span><span class="n">videoEls</span>  <span class="p">,</span> <span class="n">getVideoDetails</span><span class="p">)</span> <span class="o">%&gt;%</span>
+  <span class="n">dplyr</span><span class="o">::</span><span class="nf">bind_rows</span><span class="p">()</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>And that&rsquo;s it. As you can see <code>videoDetailsScrolled</code> has more rows than <code>details</code> because we have scrolled down 10 times which generated more videos for us to scrape.</p>
+<p>I hope that you find this tutorial useful and now know, how to tackle those pesky dynamically generated websites. See you in the next post and scrape responsibly!</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-06-22</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/2020-06-22-scraping-data-from-website-with-infinite-scrolling/index.md" target="_blank">Read Markdown</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/data-scraping/">Data-scraping</a>,&nbsp;<a href="/tags/r/">R</a>,&nbsp;<a href="/tags/selenium/">Selenium</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/2020-06-12-creating-singleton-pattern-in-s4/" class="prev" rel="prev" title="Creating singleton pattern in S4"><i class="fas fa-angle-left fa-fw"></i>Creating singleton pattern in S4</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.71.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2020</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">Peter Belai</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/smooth-scroll@16.1.3/dist/smooth-scroll.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.2.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script><script type="text/javascript">
+            window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+            gtag('config', 'UA-168161457-1 ', { 'anonymize_ip': true });
+        </script><script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=UA-168161457-1%20" async></script></body>
+</html>
